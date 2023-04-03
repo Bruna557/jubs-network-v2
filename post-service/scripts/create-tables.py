@@ -13,7 +13,7 @@ def main():
     session, cluster = db.cassandra_connection()
 
     try:
-        drop_table = 'DROP TABLE IF EXISTS posts'
+        drop_table = "DROP TABLE IF EXISTS posts"
         session.execute(drop_table)
 
         create_posts_table = "CREATE TABLE IF NOT EXISTS posts "\
@@ -27,10 +27,10 @@ def main():
         session.execute(create_posts_table)
 
     except Exception as e:
-        print(f'ERROR: {e}')
+        print(f"ERROR: {e}")
 
     finally:
-        logging.info('Closing connection to Cassandra')
+        logging.info("Closing connection to Cassandra")
         session.shutdown()
         cluster.shutdown()
 

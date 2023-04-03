@@ -26,5 +26,10 @@ Then run a query:
 cassandra@cqlsh> select * from jubs.posts where username = 'jubs' allow filtering;
 ```
 
+4. Run the app:
+```bash
+export FLASK_APP=posts/app.py && flask run --host=0.0.0.0 --port=5005
+```
+
 ## References
 https://github.com/caitlincjohnson/cassandra-noshowappts

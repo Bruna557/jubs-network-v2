@@ -1,11 +1,11 @@
-version: '2'
+version: '3'
 
 services:
   cassandra:
     container_name: cassandra
     image: cassandra:latest
     volumes:
-      - /home/bruna/study/jubs-network-v2/data
+      - /home/bruna/study/jubs-network-v2/data/cassandra
     ports:
       - 9042:9042
     environment:
