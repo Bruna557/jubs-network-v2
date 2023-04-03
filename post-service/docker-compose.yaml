@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  cassandra:
+    container_name: cassandra
+    image: cassandra:latest
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data
+    ports:
+      - 9042:9042
+    environment:
+      - CASSANDRA_START_RPC=true
+      - CASSANDRA_CLUSTER_NAME=PostsCluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter
