@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mongo:
+    container_name: mongodb
+    image: mongo:4.0.8
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=jubs
+      - MONGO_INITDB_ROOT_USERNAME=jubs
+      - MONGO_INITDB_ROOT_PASSWORD=12345678
