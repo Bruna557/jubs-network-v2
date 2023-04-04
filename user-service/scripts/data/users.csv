@@ -1,5 +1,5 @@
-id,username,password,bio,picture
-354079654,bruna,1234,"I am a software develop interested in animes and mangas.","https://cdn-icons-png.flaticon.com/512/99/99428.png"
-87459012,jubs,a1s2d3f4,"I am a dog interested in toys, bones and walks.","https://cdn-icons-png.flaticon.com/512/4540/4540592.png"
-90842135,ryuk,4321,"I am a god of death interested in apples.","https://cdn-icons-png.flaticon.com/512/415/415682.png"
-759826416,lilith,asdf,"I am a cat interested in shoelaces and garbage.","https://cdn-icons-png.flaticon.com/512/2373/2373010.png"
+username,password,bio,picture
+bruna,1234,"I am a software develop interested in animes and mangas.","https://cdn-icons-png.flaticon.com/512/99/99428.png"
+jubs,a1s2d3f4,"I am a dog interested in toys, bones and walks.","https://cdn-icons-png.flaticon.com/512/4540/4540592.png"
+ryuk,4321,"I am a god of death interested in apples.","https://cdn-icons-png.flaticon.com/512/415/415682.png"
+lilith,asdf,"I am a cat interested in shoelaces and garbage.","https://cdn-icons-png.flaticon.com/512/2373/2373010.png"

@@ -13,7 +13,7 @@ def main():
 
     try:
         logging.info("Importing data")
-        header = ["id", "username", "password", "bio", "picture"]
+        header = ["username", "password", "bio", "picture"]
         csvFile = open("scripts/data/users.csv", "r")
         reader = csv.DictReader(csvFile)
 
