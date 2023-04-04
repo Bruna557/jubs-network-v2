@@ -2,6 +2,7 @@ import glob
 import logging
 import os
 import pandas as pd
+import uuid
 
 from posts import database as db
 
@@ -16,7 +17,11 @@ def transform(df):
     :return: Transformed Pandas Dataframe
     """
     # converting date columns from object to datetime
-    df['time'] =  [pd.Timestamp(t).to_pydatetime() for t in df['time']]
+    df["time"] =  [pd.Timestamp(t).to_pydatetime() for t in df["time"]]
+
+    # converting uuid columns from string to uuid
+    df["id"] = [uuid.UUID(id) for id in df["id"]]
+
     return df
 
 
@@ -28,11 +33,10 @@ def main():
     session, cluster = db.cassandra_connection()
 
     try:
-        logging.info("Importing data into Pandas Dataframe that will be used for Cassandra tables")
+        logging.info("Importing data into Pandas Dataframe")
         files = glob.glob(os.path.join(os.getcwd() + "/scripts/data/", "*.csv"))
 
-        # adding dtype of int for id to prevent Pandas from converting it to a float
-        separate_dfs = (pd.read_csv(file, dtype={"id": int}) for file in files)
+        separate_dfs = (pd.read_csv(file) for file in files)
         df = pd.concat(separate_dfs, ignore_index=True)
 
         logging.info("Transforming the data")

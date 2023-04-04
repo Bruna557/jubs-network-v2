@@ -17,7 +17,7 @@ def main():
         session.execute(drop_table)
 
         create_posts_table = "CREATE TABLE IF NOT EXISTS posts "\
-                                    "(id int" \
+                                    "(id uuid" \
                                     ", username text" \
                                     ", body text" \
                                     ", likes int" \
@@ -25,6 +25,8 @@ def main():
                                     ", PRIMARY KEY (id))"
         logging.info('Creating posts table in Cassandra')
         session.execute(create_posts_table)
+        session.execute("CREATE INDEX username_idx ON posts ( username )")
+
 
     except Exception as e:
         print(f"ERROR: {e}")

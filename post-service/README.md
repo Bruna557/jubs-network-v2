@@ -23,7 +23,7 @@ docker exec -it cassandra bash -c "cqlsh -u cassandra -p cassandra"
 
 Then run a query:
 ```bash
-cassandra@cqlsh> select * from jubs.posts where username = 'jubs' allow filtering;
+cassandra@cqlsh> select * from jubs.posts where username = 'jubs';
 ```
 
 4. Run the app:
