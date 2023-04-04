@@ -94,6 +94,42 @@ MATCH (:Person {name: 'Tom Hanks'})-[:DIRECTED]->(movie:Movie)
 RETURN movie.title
 ```
 
+## Filtering Queries
+You can filter query results using the `WHERE` clause:
+
+```cypher
+MATCH (p:Person)
+WHERE 3 <= p.yearsExp <= 7
+RETURN p
+```
+
+Checking strings:
+
+```cypher
+//check if a property starts with 'M'
+MATCH (p:Person)
+WHERE p.name STARTS WITH 'M'
+RETURN p.name;
+
+//check if a property contains 'a'
+MATCH (p:Person)
+WHERE p.name CONTAINS 'a'
+RETURN p.name;
+
+//check if a property ends with 'n'
+MATCH (p:Person)
+WHERE p.name ENDS WITH 'n'
+RETURN p.name;
+```
+
+List of values:
+
+```cypher
+MATCH (p:Person)
+WHERE p.yearsExp IN [1, 5, 6]
+RETURN p.name, p.yearsExp
+```
+
 ## Inserting Data
 You can use `CREATE` to insert nodes, relationships, and patterns into Neo4j.
 Let's create two nodes labeled Person:
@@ -103,7 +139,7 @@ CREATE (friend:Person {name: 'Jennifer'})
 CREATE (friend:Person {name: 'Mark'})
 ```
 
-Now we can add a new IS_FRIENDS_WITH relationship between the existing Jennifer and Mark nodes:
+Now we can add a new `IS_FRIENDS_WITH` relationship between the existing Jennifer and Mark nodes:
 
 ```cypher
 MATCH (jennifer:Person {name: 'Jennifer'})
@@ -116,3 +152,76 @@ We can also create both nodes and the relationship at the same time:
 ```cypher
 CREATE (j:Person {name: 'Jennifer'})-[rel:IS_FRIENDS_WITH]->(m:Person {name: 'Mark'})
 ```
+
+## Avoiding Duplicate Data Using MERGE
+`MERGE` does a "select-or-insert" operation that first checks if the data exists in the database. If it exists, then Cypher returns it as is or makes any updates you specify on the existing node or relationship. If the data does not exist, then Cypher will create it with the information you specify.
+
+```chypher
+MATCH (j:Person {name: 'Jennifer'})
+MATCH (m:Person {name: 'Mark'})
+MERGE (j)-[r:IS_FRIENDS_WITH]->(m)
+RETURN j, r, m
+```
+
+Notice that we used MATCH here to find both Mark’s node and Jennifer’s node before we used MERGE to find or create the relationship. Why did we not use a single statement? MERGE looks for an entire pattern that you specify to see whether to return an existing one or create it new. If the entire pattern (nodes, relationships, and any specified properties) does not exist, Cypher will create it.
+
+```cypher
+//this statement will create duplicate nodes for Mark and Jennifer
+MERGE (j:Person {name: 'Jennifer'})-[r:IS_FRIENDS_WITH]->(m:Person {name: 'Mark'})
+RETURN j, r, m
+```
+
+Perhaps you want to use MERGE to ensure you do not create duplicates, but you want to initialize certain properties if the pattern is created and update other properties if it is only matched. In this case, you can use ON CREATE or ON MATCH with the SET keyword to handle these situations.
+
+```cypher
+MERGE (m:Person {name: 'Mark'})-[r:IS_FRIENDS_WITH]-(j:Person {name:'Jennifer'})
+  ON CREATE SET r.since = date('2018-03-01')
+  ON MATCH SET r.updated = date()
+RETURN m, r, j
+```
+
+## Updading Data
+You can modify node and relationship properties by matching the pattern you want to find and using the SET keyword to add, remove, or update properties.
+
+```cypher
+MATCH (:Person {name: 'Jennifer'})-[rel:WORKS_FOR]-(:Company {name: 'Neo4j'})
+SET rel.startYear = date({year: 2018})
+RETURN rel
+```
+
+## Deleting Data
+Deleting a node:
+
+```cypher
+MATCH (m:Person {name: 'Mark'})
+DELETE m
+```
+
+Deleting a relationship:
+
+```cypher
+MATCH (j:Person {name: 'Jennifer'})-[r:IS_FRIENDS_WITH]->(m:Person {name: 'Mark'})
+DELETE r
+```
+
+Neo4j is ACID-compliant so it doesn’t allow us to delete a node if it still has relationships. Using the DETACH DELETE syntax tells Cypher to delete any relationships the node has, as well as remove the node itself.
+
+```cypher
+MATCH (m:Person {name: 'Mark'})
+DETACH DELETE m
+```
+
+Deleting properties:
+
+```cypher
+//delete property using REMOVE keyword
+MATCH (n:Person {name: 'Jennifer'})
+REMOVE n.birthdate
+
+//delete property with SET to null value
+MATCH (n:Person {name: 'Jennifer'})
+SET n.birthdate = null
+```
+
+## References
+https://neo4j.com/developer/cypher/
