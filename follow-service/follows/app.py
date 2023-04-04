@@ -14,6 +14,7 @@ def get_posts(username):
         logging.info("Connecting to Neo4j")
         session, driver = db.neo4j_connection()
 
+        logging.info("Fetching followings")
         query = """
             MATCH (:Person {name: $username})-[:FOLLOWS]->(followed:Person)
             RETURN followed {

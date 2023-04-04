@@ -13,6 +13,7 @@ def get_posts(username):
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
+        logging.info("Fetching posts")
         posts = session.execute("SELECT * FROM posts WHERE username = %s ALLOW FILTERING", (username, ))
 
     except Exception as e:
