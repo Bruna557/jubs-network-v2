@@ -6,17 +6,12 @@
 docker compose up
 ```
 
-2. Create graph:
-```bash
-python -m scripts.create-graph
-```
-
-3. Populate table:
+1. Populate the graph:
 ```bash
 python -m scripts.etl
 ```
 
-4. Run the app:
+1. Run the app:
 ```bash
 export FLASK_APP=follows/app.py && flask run --host=0.0.0.0 --port=5005
 ```

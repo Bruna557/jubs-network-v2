@@ -15,10 +15,15 @@ def get_posts(username):
         session, driver = db.neo4j_connection()
 
         query = """
-            MATCH (:Person {name: $username})-[:FOLLOWS]->(people:Person)
-            RETURN people
+            MATCH (:Person {name: $username})-[:FOLLOWS]->(followed:Person)
+            RETURN followed {
+                username: followed.name
+            }
         """
-        following = session.run(query, username=username)
+        result = session.run(query, username=username)
+
+        for record in result:
+            following.append(record.values()[0]["username"])
 
     except Exception as e:
         print(f"ERROR: {e}")

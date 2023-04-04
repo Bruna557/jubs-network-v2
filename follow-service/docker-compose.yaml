@@ -11,4 +11,3 @@ services:
       - '7687:7687'
     environment:
       - NEO4J_AUTH=neo4j/12345678
-      - NEO4J_dbms_security_allow__csv__import__from__file__urls=true
