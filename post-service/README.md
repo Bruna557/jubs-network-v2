@@ -31,5 +31,10 @@ cassandra@cqlsh> select * from jubs.posts where username = 'jubs';
 export FLASK_APP=posts/app.py && flask run --host=0.0.0.0 --port=5006
 ```
 
+4. Subscribe to events:
+```bash
+python -m event-subscriber.subscribers
+```
+
 ## References
 https://github.com/caitlincjohnson/cassandra-noshowappts
