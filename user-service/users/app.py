@@ -3,6 +3,7 @@ from flask import Flask, request, Response
 import logging
 
 from . import database as db
+from . import publisher
 
 app = Flask(__name__)
 
@@ -100,6 +101,7 @@ def delete_user(username):
 
         logging.info("Deleting user")
         jubs_db.users.delete_one({ "username": username })
+        publisher.publish_user_deleted_event(username)
 
     except Exception as e:
         print(f"ERROR: {e}")

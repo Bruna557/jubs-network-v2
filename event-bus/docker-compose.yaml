@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.11.13
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
