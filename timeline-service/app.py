@@ -36,5 +36,5 @@ def get_timeline(username):
     response = Response(json.dumps(posts))
     response.headers["Cache-Control"] = "public, max-age=60"
     response.headers["Content-Type"] = "application/json"
-    response.status = 201
+    response.status = 200
     return response

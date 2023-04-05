@@ -11,11 +11,11 @@ def get_posts(username):
     try:
         posts = reposistory.get_by_username(username)
         response = Response(json.dumps(posts))
-        response.status = 200
         response.headers["Cache-Control"] = "public, max-age=60"
+        response.status = 200
 
     except Exception as e:
-        response = Response(json.dumps({ "error": e }))
+        response = Response(json.dumps({ "error": str(e) }))
         response.status = 500
 
     response.headers["Content-Type"] = "application/json"
@@ -29,7 +29,7 @@ def create_post(username):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": e }))
+        response = Response(json.dumps({ "error": str(e) }))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response
@@ -42,7 +42,7 @@ def edit_post(id):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": e }))
+        response = Response(json.dumps({ "error": str(e) }))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response
@@ -55,7 +55,7 @@ def like_post(id):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": e }))
+        response = Response(json.dumps({ "error": str(e) }))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response
@@ -68,7 +68,7 @@ def delete_post(id):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": e }))
+        response = Response(json.dumps({ "error": str(e) }))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response

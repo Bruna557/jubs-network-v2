@@ -27,8 +27,14 @@ def get_followings(username):
         for record in result:
             following.append(record.values()[0]["username"])
 
+        response = Response(json.dumps(following))
+        response.status = 200
+        response.headers["Cache-Control"] = "public, max-age=60"
+
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Failed to fetch followings: {e}")
+        response = Response(json.dumps({ "error": str(e) }))
+        response.status = 500
 
 
     finally:
@@ -36,10 +42,7 @@ def get_followings(username):
         session.close()
         driver.close()
 
-    response = Response(json.dumps(following))
-    response.headers["Cache-Control"] = "public, max-age=60"
     response.headers["Content-Type"] = "application/json"
-    response.status = 201
     return response
 
 
@@ -60,11 +63,17 @@ def get_followers(username):
         """
         result = session.run(query, username=username)
 
+        response = Response(json.dumps(following))
+        response.status = 200
+        response.headers["Cache-Control"] = "public, max-age=60"
+
         for record in result:
             following.append(record.values()[0]["username"])
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Failed to fetch followers: {e}")
+        response = Response(json.dumps({ "error": str(e) }))
+        response.status = 500
 
 
     finally:
@@ -72,10 +81,7 @@ def get_followers(username):
         session.close()
         driver.close()
 
-    response = Response(json.dumps(following))
-    response.headers["Cache-Control"] = "public, max-age=60"
     response.headers["Content-Type"] = "application/json"
-    response.status = 201
     return response
 
 
@@ -97,9 +103,14 @@ def follow(follower, followed):
         """
         session.run(query, user1=follower, user2=followed)
 
+        return "OK"
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Failed to add following relationship: {e}")
+        response = Response(json.dumps({ "error": str(e) }))
+        response.status = 500
+        response.headers["Content-Type"] = "application/json"
+        return response
 
 
     finally:
@@ -107,7 +118,6 @@ def follow(follower, followed):
         session.close()
         driver.close()
 
-    return "OK"
 
 
 @app.route("/follows/<follower>/<followed>", methods=["DELETE"])
@@ -123,14 +133,17 @@ def unfollow(follower, followed):
         """
         session.run(query, user1=follower, user2=followed)
 
+        return "OK"
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Failed to remove following relationship: {e}")
+        response = Response(json.dumps({ "error": str(e) }))
+        response.status = 500
+        response.headers["Content-Type"] = "application/json"
+        return response
 
 
     finally:
         logging.info("Closing connection to Neo4j")
         session.close()
         driver.close()
-
-    return "OK"

@@ -19,7 +19,7 @@ def get_by_username(username):
         posts = session.execute("SELECT * FROM posts WHERE username = %s", (username, ))
 
     except Exception as e:
-        logging.error(e)
+        logging.error(f"Failed to fetch posts: {e}")
         raise e
 
     finally:
@@ -43,7 +43,7 @@ def create(username, body):
         session.execute(query, [uuid.uuid4(), username, body, 0, datetime.datetime.now()])
 
     except Exception as e:
-        logging.error(e)
+        logging.error(f"Failed to create post: {e}")
         raise e
 
     finally:
@@ -61,7 +61,7 @@ def edit(id, body):
         session.execute("UPDATE posts SET body = %s WHERE id = %s", (body, uuid.UUID(id)))
 
     except Exception as e:
-        logging.error(e)
+        logging.error(f"Failed to update post: {e}")
         raise e
 
     finally:
@@ -81,7 +81,7 @@ def like(id):
         session.execute("UPDATE posts SET likes = %s WHERE id = %s", (likes, uuid.UUID(id)))
 
     except Exception as e:
-        logging.error(e)
+        logging.error(f"Failed to increment likes: {e}")
         raise e
 
     finally:
@@ -99,7 +99,7 @@ def delete(id):
         session.execute("DELETE FROM posts WHERE id = %s", (uuid.UUID(id), ))
 
     except Exception as e:
-        logging.error(e)
+        logging.error(f"Failed to delete post: {e}")
         raise e
 
     finally:
