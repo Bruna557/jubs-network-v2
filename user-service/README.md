@@ -1,4 +1,4 @@
-# Post Service
+# User Service
 
 ## Setup
 1. Run MongoDB:
