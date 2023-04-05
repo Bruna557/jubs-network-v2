@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  redis:
+    container_name: redis
+    image: redis:7.0.10
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/redis
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=psw231377
+      - REDIS_REPLICATION_MODE=master
+    command:
+      - --save 10 100
+      - --requirepass psw231377
