@@ -1,9 +1,9 @@
-version: '3'
+version: '3.8'
 
 services:
   neo4j:
     container_name: neo4j
-    image: neo4j:latest
+    image: neo4j:5.6.0
     volumes:
       - /home/bruna/study/jubs-network-v2/data/neo4j
     ports:

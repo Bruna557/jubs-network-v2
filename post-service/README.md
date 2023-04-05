@@ -28,7 +28,7 @@ cassandra@cqlsh> select * from jubs.posts where username = 'jubs';
 
 4. Run the app:
 ```bash
-export FLASK_APP=posts/app.py && flask run --host=0.0.0.0 --port=5005
+export FLASK_APP=posts/app.py && flask run --host=0.0.0.0 --port=5006
 ```
 
 ## References
