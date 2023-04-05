@@ -1,9 +1,10 @@
 from flask import Flask, json, Response
 import logging
 
-from . import database as db
+from app import database as db
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/follows/followings/<username>", methods=["GET"])

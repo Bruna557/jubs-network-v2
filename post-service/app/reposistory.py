@@ -2,7 +2,10 @@ import datetime
 import logging
 import uuid
 
-from . import database as db
+from app import database as db
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 def get_by_username(username):

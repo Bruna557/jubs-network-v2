@@ -1,6 +1,6 @@
 from flask import Flask, json, request, Response
 
-from . import reposistory
+from app import reposistory
 
 
 app = Flask(__name__)

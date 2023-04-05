@@ -1,6 +1,6 @@
 import logging
 
-from posts import database as db
+from app import database as db
 
 
 logging.basicConfig(level=logging.INFO)

@@ -1,7 +1,10 @@
 import logging
 import pika
 
-from posts import services
+from app import services
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 def subscribe_to_user_deleted_event():

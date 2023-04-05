@@ -2,10 +2,12 @@ from bson import json_util
 from flask import Flask, request, Response
 import logging
 
-from . import database as db
-from . import publisher
+from app import database as db
+from app import publisher
+
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/users/<username>", methods=["GET"])

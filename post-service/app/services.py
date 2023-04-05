@@ -1,7 +1,10 @@
 import logging
 
 
-from . import reposistory
+from app import reposistory
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 def delete_user_posts(username):

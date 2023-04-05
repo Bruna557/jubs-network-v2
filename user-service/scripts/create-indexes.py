@@ -1,7 +1,10 @@
 import logging
 from pymongo import DESCENDING
 
-from users import database as db
+from app import database as db
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 def main():

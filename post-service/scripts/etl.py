@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import uuid
 
-from posts import database as db
+from app import database as db
 
 
 logging.basicConfig(level=logging.INFO)

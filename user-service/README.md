@@ -23,5 +23,5 @@ python -m scripts.etl
 
 5. Run the app:
 ```bash
-export FLASK_APP=users/app.py && flask run --host=0.0.0.0 --port=5008
+export FLASK_APP=app/app.py && flask run --host=0.0.0.0 --port=5008
 ```

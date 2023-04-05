@@ -5,6 +5,7 @@ import requests
 import database as db
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/timeline/<username>", methods=["GET"])

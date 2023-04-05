@@ -2,7 +2,10 @@ import logging
 import pandas as pd
 import os
 
-from follows import database as db
+from app import database as db
+
+
+logging.basicConfig(level=logging.INFO)
 
 
 def add_nodes(df, session):
