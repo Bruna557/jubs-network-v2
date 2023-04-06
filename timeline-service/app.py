@@ -38,3 +38,6 @@ def get_timeline(username):
     response.headers["Content-Type"] = "application/json"
     response.status = 200
     return response
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5007, debug=True)

@@ -1,12 +1,7 @@
 # Timeline Service
 
 ## Setup
-1. Run Redis:
+1. Run Redis and the App:
 ```bash
 docker compose up
-```
-
-2. Run the app:
-```bash
-flask run --host=0.0.0.0 --port=5007
 ```
