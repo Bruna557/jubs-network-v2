@@ -43,7 +43,7 @@ def main():
         df = transform(df)
 
         logging.info("Loading data into the table")
-        query_insert_posts = "INSERT INTO posts " \
+        query_insert_posts = "INSERT INTO jubs.posts " \
                                 "(id, username, body, likes, time) " \
                                 "VALUES (?, ?, ?, ?, ?)"
         prepared_posts = session.prepare(query_insert_posts)

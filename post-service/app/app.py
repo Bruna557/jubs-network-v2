@@ -1,3 +1,4 @@
+from bson import json_util
 from flask import Flask, json, request, Response
 
 from app import reposistory
@@ -9,7 +10,9 @@ app = Flask(__name__)
 @app.route("/posts/<username>", methods=["GET"])
 def get_posts(username):
     try:
-        posts = reposistory.get_by_username(username)
+        posts = reposistory.get_by_username(username,
+                                            request.args.get('page_size') or 5,
+                                            request.args.get('last_timestamp'))
         response = Response(json.dumps(posts))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
