@@ -1,7 +1,7 @@
 # User Service
 
 ## Setup
-1. Run MongoDB:
+1. Run MongoDB and the App:
 ```bash
 docker compose up
 ```
@@ -19,9 +19,4 @@ python -m scripts.create-indexes
 4. Populate collection:
 ```bash
 python -m scripts.etl
-```
-
-5. Run the app:
-```bash
-export FLASK_APP=app/app.py && flask run --host=0.0.0.0 --port=5008
 ```
