@@ -13,6 +13,11 @@ def cassandra_connection():
     """
     cluster = Cluster(["localhost"], port=9042)
     session = cluster.connect()
+    session.execute("""
+            CREATE KEYSPACE IF NOT EXISTS jubs
+            WITH REPLICATION =
+            { 'class' : 'SimpleStrategy', 'replication_factor' : 1 }
+            """)
     session.set_keyspace("jubs")
     return session, cluster
 

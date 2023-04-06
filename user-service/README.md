@@ -13,7 +13,7 @@ python -m scripts.drop-collections
 
 3. Create the indexes:
 ```bash
-python -m scripts.create-index
+python -m scripts.create-indexes
 ```
 
 4. Populate collection:

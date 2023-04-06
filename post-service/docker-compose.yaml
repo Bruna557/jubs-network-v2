@@ -1,6 +1,10 @@
-version: '3.8'
+version: "3.8"
 
 services:
+  app:
+    build: .
+    network_mode: host
+
   cassandra:
     container_name: cassandra
     image: cassandra:4.1.1

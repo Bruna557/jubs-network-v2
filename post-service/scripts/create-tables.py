@@ -13,13 +13,6 @@ def main():
     session, cluster = db.cassandra_connection()
 
     try:
-        logging.info('Creating keyspace jubs in Cassandra')
-        session.execute("""
-            CREATE KEYSPACE IF NOT EXISTS jubs
-            WITH REPLICATION =
-            { 'class' : 'SimpleStrategy', 'replication_factor' : 1 }
-            """)
-
         drop_table = "DROP TABLE IF EXISTS posts"
         session.execute(drop_table)
 

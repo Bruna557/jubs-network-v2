@@ -1,7 +1,7 @@
 # Post Service
 
 ## Setup
-1. Run Cassandra:
+1. Run Cassandra, the App and the Event Subscriber (depends on event-bus):
 ```bash
 docker compose up
 ```
@@ -24,16 +24,6 @@ docker exec -it cassandra bash -c "cqlsh -u cassandra -p cassandra"
 Then run a query:
 ```bash
 cassandra@cqlsh> select * from jubs.posts where username = 'jubs';
-```
-
-4. Run the app:
-```bash
-export FLASK_APP=app/app.py && flask run --host=0.0.0.0 --port=5006
-```
-
-4. Subscribe to events:
-```bash
-python -m event-subscriber.subscribers
 ```
 
 ## References
