@@ -9,14 +9,13 @@ logging.basicConfig(level=logging.INFO)
 
 
 def get_by_username(username):
-    posts = []
-
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
         logging.info("Fetching posts")
         posts = session.execute("SELECT * FROM posts WHERE username = %s", (username, ))
+        return list(posts)
 
     except Exception as e:
         logging.error(f"Failed to fetch posts: {e}")
@@ -27,7 +26,6 @@ def get_by_username(username):
         session.shutdown()
         cluster.shutdown()
 
-    return list(posts)
 
 
 def create(username, body):

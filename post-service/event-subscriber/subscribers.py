@@ -19,7 +19,6 @@ def subscribe_to_user_deleted_event():
 
     channel.queue_bind(exchange='user-deleted', queue=queue_name)
 
-
     def callback(ch, method, properties, body):
         username = body.decode('utf-8')
         logging.info(f"Received UserDeleted event: {username}")
