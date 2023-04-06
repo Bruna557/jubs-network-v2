@@ -1,0 +1,438 @@
+{
+	"info": {
+		"_postman_id": "ce6aa165-44ce-44bc-b4be-7ea47f613322",
+		"name": "jubs-python",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8026043"
+	},
+	"item": [
+		{
+			"name": "user service",
+			"item": [
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5008/users/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5008",
+							"path": [
+								"users",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"jondoe\",\n    \"password\": \"1234\",\n    \"bio\": \"Some bio.\",\n    \"picture\": \"some/picture\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:5008/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5008",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"newpassword\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:5008/users/change-password/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5008",
+							"path": [
+								"users",
+								"change-password",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change bio",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bio\": \"New bio.\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:5008/users/change-bio/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5008",
+							"path": [
+								"users",
+								"change-bio",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change picture",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"picture\": \"new/picture\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:5008/users/change-picture/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5008",
+							"path": [
+								"users",
+								"change-picture",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5008/users/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5008",
+							"path": [
+								"users",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "post service",
+			"item": [
+				{
+					"name": "Get Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5006/posts/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5006",
+							"path": [
+								"posts",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"New post.\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:5006/posts/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5006",
+							"path": [
+								"posts",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"Edited post.\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:5006/posts/7178ca36-b34c-4a97-b371-738bf00619ab",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5006",
+							"path": [
+								"posts",
+								"7178ca36-b34c-4a97-b371-738bf00619ab"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5006/posts/like/7178ca36-b34c-4a97-b371-738bf00619ab",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5006",
+							"path": [
+								"posts",
+								"like",
+								"7178ca36-b34c-4a97-b371-738bf00619ab"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5006/posts/7178ca36-b34c-4a97-b371-738bf00619ab",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5006",
+							"path": [
+								"posts",
+								"7178ca36-b34c-4a97-b371-738bf00619ab"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "follow service",
+			"item": [
+				{
+					"name": "Get followings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/follows/followings/jubs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"follows",
+								"followings",
+								"jubs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get followers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/follows/followers/jondoe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"follows",
+								"followers",
+								"jondoe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follow",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/follows/jondoe/jubs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"follows",
+								"jondoe",
+								"jubs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollows",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/follows/jondoe/jubs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"follows",
+								"jondoe",
+								"jubs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "timeline-service",
+			"item": [
+				{
+					"name": "Get Timeline",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5007/timeline/bruna",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"timeline",
+								"bruna"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
