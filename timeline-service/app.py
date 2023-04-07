@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Flask, json, request, Response
 import logging
 import requests
+import time
 
 import repository as cache
 
@@ -13,32 +14,35 @@ logging.basicConfig(level=logging.INFO)
 def get_timeline(username):
     try:
         logging.info("Fetching posts")
-        time = request.args.get("time") or int(datetime.timestamp(datetime.now()))
+        time = int(request.args.get("time")) or int(datetime.timestamp(datetime.now()))
         scroll = request.args.get("scroll") or "down"
 
-        posts = cache.get(username)
+        posts = json.loads(cache.get(username))
 
-        if posts and ((scroll == "down" and json.loads(posts)[-1:]["time"] > time) or
-                      (scroll == "up" and  json.loads(posts)[0]["time"] < time)):
+        if posts and ((scroll == "down" and get_post_timestamp(posts[-1:]) > time) or
+                      (scroll == "up" and  get_post_timestamp(posts[0]) < time)):
             logging.info("Cache hit - getting posts from cache")
-            posts = json.loads(posts)
+            posts = posts
         else:
             logging.info("Cache miss - getting posts from Post Service")
-            followings = requests.get(f"http://localhost:5005/follows/followings/{username}")
+            followings_result = requests.get(f"http://localhost:5005/follows/followings/{username}")
 
-            print(f"$$$$$$$$$$$$ Got followings: {followings.text}")
+            if followings_result.status_code == 200:
+                posts_result = requests.get(f"http://localhost:5006/posts?page_size=5&time={time}&scroll={scroll}",
+                                            data=json.dumps({ "users": json.loads(followings_result.text) }),
+                                            headers={"Content-Type":"application/json"})
 
-            posts = requests.get(f"http://localhost:5006/posts?page_size=5&time={time}&scroll={scroll}",
-                                 data=json.dumps({ "users": list(followings.text) }),
-                                 headers={"Content-Type":"application/json"})
+                if posts_result.status_code == 200 and json.loads(posts_result.text):
+                    posts = json.loads(posts_result.text)
+                    cache.set(username, posts_result.text)
+                else:
+                    return posts_result.text, posts_result.status_code
+            else:
+                return followings_result.text, followings_result.status_code
 
-            print(f"$$$$$$$$$$$ Got posts: {posts.text}")
-
-            cache.set(username, json.dumps(posts.text))
-
-        response = Response(json.dumps(posts.text))
-        response.headers["Cache-Control"] = "public, max-age=60"
-        response.status = 200
+            response = Response(json.dumps(posts))
+            response.headers["Cache-Control"] = "public, max-age=60"
+            response.status = 200
 
     except Exception as e:
         logging.error(f"Failed to fetch posts: {e}")
@@ -47,6 +51,10 @@ def get_timeline(username):
 
     response.headers["Content-Type"] = "application/json"
     return response
+
+
+def get_post_timestamp(post):
+    return int(time.mktime(datetime.strptime(post[0][1], "%a, %d %b %Y %H:%M:%S GMT").timetuple()))
 
 
 if __name__ == '__main__':

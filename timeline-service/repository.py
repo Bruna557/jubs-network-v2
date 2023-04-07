@@ -20,7 +20,7 @@ def get(key):
     if result:
         return result.decode("utf-8")
     else:
-        return []
+        return "[]"
 
 
 def set(key, data):
