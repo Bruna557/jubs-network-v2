@@ -32,10 +32,10 @@ def main():
     """
     Main script that performs the ETL
     """
-    logging.info("Connecting to Neo4j")
-    session, driver = db.neo4j_connection()
-
     try:
+        logging.info("Connecting to Neo4j")
+        session, driver = db.neo4j_connection()
+
         path = os.path.join(os.getcwd() + "/scripts/data/follows.csv")
         df = pd.read_csv(path)
 
@@ -45,7 +45,7 @@ def main():
         add_relationships(df, session)
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Error adding nodes/relationships: {e}")
 
     finally:
         logging.info("Closing connection to Neo4j")

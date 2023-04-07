@@ -1,8 +1,9 @@
-from flask import Flask, json, Response
+from datetime import datetime
+from flask import Flask, json, request, Response
 import logging
 import requests
 
-import database as db
+import repository as cache
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -10,34 +11,43 @@ logging.basicConfig(level=logging.INFO)
 
 @app.route("/timeline/<username>", methods=["GET"])
 def get_timeline(username):
-    posts = []
-
     try:
-        logging.info("Connecting to Redis")
-        cache = db.redis_connection()
-
         logging.info("Fetching posts")
-        posts = cache.get_data(username) or []
+        time = request.args.get("time") or int(datetime.timestamp(datetime.now()))
+        scroll = request.args.get("scroll") or "down"
 
-        if not posts:
-            logging.info("Cache miss - getting posts from Post Service")
-            followings = requests.get(f"http://localhost:5005/follows/followings/{username}")
-            for user in json.loads(followings.text):
-                _posts = requests.get(f"http://localhost:5006/posts/{user}")
-                posts.append(json.loads(_posts.text))
-            cache.set_data(username, json.dumps(posts))
-        else:
+        posts = cache.get(username)
+
+        if posts and ((scroll == "down" and json.loads(posts)[-1:]["time"] > time) or
+                      (scroll == "up" and  json.loads(posts)[0]["time"] < time)):
             logging.info("Cache hit - getting posts from cache")
             posts = json.loads(posts)
+        else:
+            logging.info("Cache miss - getting posts from Post Service")
+            followings = requests.get(f"http://localhost:5005/follows/followings/{username}")
+
+            print(f"$$$$$$$$$$$$ Got followings: {followings.text}")
+
+            posts = requests.get(f"http://localhost:5006/posts?page_size=5&time={time}&scroll={scroll}",
+                                 data=json.dumps({ "users": list(followings.text) }),
+                                 headers={"Content-Type":"application/json"})
+
+            print(f"$$$$$$$$$$$ Got posts: {posts.text}")
+
+            cache.set(username, json.dumps(posts.text))
+
+        response = Response(json.dumps(posts.text))
+        response.headers["Cache-Control"] = "public, max-age=60"
+        response.status = 200
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Failed to fetch posts: {e}")
+        response = Response(json.dumps({ "error": str(e) }))
+        response.status = 500
 
-    response = Response(json.dumps(posts))
-    response.headers["Cache-Control"] = "public, max-age=60"
     response.headers["Content-Type"] = "application/json"
-    response.status = 200
     return response
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5007, debug=True)

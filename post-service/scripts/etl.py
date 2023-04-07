@@ -44,20 +44,19 @@ def main():
 
         logging.info("Loading data into the table")
         query_insert_posts = "INSERT INTO jubs.posts " \
-                                "(id, username, body, likes, time) " \
-                                "VALUES (?, ?, ?, ?, ?)"
+                                "(username, body, likes, time) " \
+                                "VALUES (?, ?, ?, ?)"
         prepared_posts = session.prepare(query_insert_posts)
 
         for index, row in df.iterrows():
             session.execute(prepared_posts
-                            , (row["id"]
-                               , row["username"]
+                            , (row["username"]
                                , row["body"]
                                , row["likes"]
                                , row["time"]))
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Error loading data into table: {e}")
 
     finally:
         logging.info("Closing connection to Cassandra")

@@ -18,7 +18,7 @@ def main():
         jubs_db.users.drop()
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Error dropping collections: {e}")
 
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ def main():
             jubs_db["users"].insert_one(row)
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Error loading data into collection: {e}")
 
 
 if __name__ == "__main__":

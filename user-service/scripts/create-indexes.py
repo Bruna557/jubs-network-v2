@@ -19,7 +19,7 @@ def main():
         jubs_db.users.create_index([("name", DESCENDING)])
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Error creating index: {e}")
 
 
 if __name__ == "__main__":

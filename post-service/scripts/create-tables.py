@@ -24,20 +24,16 @@ def main():
         session.execute(drop_table)
 
         create_posts_table = "CREATE TABLE IF NOT EXISTS jubs.posts "\
-                                    "(id uuid" \
-                                    ", username text" \
+                                    "(username text" \
                                     ", body text" \
                                     ", likes int" \
                                     ", time timestamp" \
-                                    ", PRIMARY KEY (id, time))" \
-                                    " WITH CLUSTERING ORDER BY (time DESC)"
+                                    ", PRIMARY KEY (username, time))"
         logging.info('Creating posts table in Cassandra')
         session.execute(create_posts_table)
-        session.execute("CREATE INDEX username_idx ON jubs.posts ( username )")
-
 
     except Exception as e:
-        print(f"ERROR: {e}")
+        logging.error(f"Error creating tables: {e}")
 
     finally:
         logging.info("Closing connection to Cassandra")
