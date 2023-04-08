@@ -3,9 +3,6 @@ import logging
 from app import database as db
 
 
-logging.basicConfig(level=logging.INFO)
-
-
 def get_followings(username):
     try:
         logging.info("Connecting to Neo4j")

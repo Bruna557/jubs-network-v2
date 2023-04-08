@@ -70,7 +70,7 @@ def edit_post(time, username):
         return response
 
 
-@app.route("/posts/like/<time>/<username>", methods=["PUT"])
+@app.route("/likes/<time>/<username>", methods=["PUT"])
 def like_post(time, username):
     try:
         reposistory.like(username, time)

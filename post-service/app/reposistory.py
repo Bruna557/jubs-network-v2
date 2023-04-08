@@ -14,11 +14,14 @@ def get_by_users(users, page_size, time, scroll):
 
         logging.info("Fetching posts")
         if scroll == "down":
-            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time < ? ORDER BY time DESC LIMIT ? ALLOW FILTERING")
+            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time < ? ORDER BY time DESC "
+                                    "LIMIT ? ALLOW FILTERING")
         else:
-            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time > ? ORDER BY time DESC LIMIT ? ALLOW FILTERING")
+            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time > ? ORDER BY time DESC "
+                                    "LIMIT ? ALLOW FILTERING")
 
-        # Turn paging off since Cassandra cannot page queries with both ORDER BY and a IN restriction on the partition key
+        # Turn paging off since Cassandra cannot page queries with both ORDER BY and a IN restriction on the
+        # partition key
         query.fetch_size = None
 
         results = session.execute(query, (users, datetime.datetime.fromtimestamp(int(time)), int(page_size)))
@@ -41,9 +44,11 @@ def get_by_username(username, page_size, time, scroll):
 
         logging.info("Fetching posts")
         if scroll == "down":
-            query = "SELECT * FROM jubs.posts WHERE username = %s AND time < %s ORDER BY time DESC LIMIT %s ALLOW FILTERING"
+            query = "SELECT * FROM jubs.posts WHERE username = %s AND time < %s ORDER BY time DESC LIMIT %s ALLOW " \
+                    "FILTERING"
         else:
-            query = "SELECT * FROM jubs.posts WHERE username = %s AND time > %s ORDER BY time DESC LIMIT %s ALLOW FILTERING"
+            query = "SELECT * FROM jubs.posts WHERE username = %s AND time > %s ORDER BY time DESC LIMIT %s ALLOW " \
+                    "FILTERING"
 
         results = session.execute(query, (username, datetime.datetime.fromtimestamp(int(time)), int(page_size)))
         return list(results)
