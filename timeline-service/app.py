@@ -14,13 +14,13 @@ logging.basicConfig(level=logging.INFO)
 def get_timeline(username):
     try:
         logging.info("Fetching posts")
-        time = int(request.args.get("time")) or int(datetime.timestamp(datetime.now()))
+        time = request.args.get("time") or int(datetime.timestamp(datetime.now()))
         scroll = request.args.get("scroll") or "down"
 
         posts = json.loads(cache.get(username))
 
-        if posts and ((scroll == "down" and get_post_timestamp(posts[-1:]) > time) or
-                      (scroll == "up" and  get_post_timestamp(posts[0]) < time)):
+        if posts and ((scroll == "down" and get_post_timestamp(posts[-1:][0]) > int(time)) or
+                      (scroll == "up" and  get_post_timestamp(posts[0]) < int(time))):
             logging.info("Cache hit - getting posts from cache")
             posts = posts
         else:
@@ -40,9 +40,9 @@ def get_timeline(username):
             else:
                 return followings_result.text, followings_result.status_code
 
-            response = Response(json.dumps(posts))
-            response.headers["Cache-Control"] = "public, max-age=60"
-            response.status = 200
+        response = Response(json.dumps(posts))
+        response.headers["Cache-Control"] = "public, max-age=60"
+        response.status = 200
 
     except Exception as e:
         logging.error(f"Failed to fetch posts: {e}")
@@ -54,7 +54,7 @@ def get_timeline(username):
 
 
 def get_post_timestamp(post):
-    return int(time.mktime(datetime.strptime(post[0][1], "%a, %d %b %Y %H:%M:%S GMT").timetuple()))
+    return int(time.mktime(datetime.strptime(post[1], "%a, %d %b %Y %H:%M:%S GMT").timetuple()))
 
 
 if __name__ == '__main__':
