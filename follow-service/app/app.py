@@ -7,7 +7,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@app.route("/follows/followings/<username>", methods=["GET"])
+@app.route("/followings/<username>", methods=["GET"])
 def get_followings(username):
     try:
         followings = repository.get_followings(username)
@@ -23,7 +23,7 @@ def get_followings(username):
     return response
 
 
-@app.route("/follows/followers/<username>", methods=["GET"])
+@app.route("/followers/<username>", methods=["GET"])
 def get_followers(username):
     try:
         followers = repository.get_followers(username)
@@ -39,7 +39,7 @@ def get_followers(username):
     return response
 
 
-@app.route("/follows/<follower>/<followed>", methods=["POST"])
+@app.route("/follow/<follower>/<followed>", methods=["POST"])
 def follow(follower, followed):
     try:
         repository.follow(follower, followed)
@@ -52,7 +52,7 @@ def follow(follower, followed):
         return response
 
 
-@app.route("/follows/<follower>/<followed>", methods=["DELETE"])
+@app.route("/follow/<follower>/<followed>", methods=["DELETE"])
 def unfollow(follower, followed):
     try:
         repository.unfollow(follower, followed)
