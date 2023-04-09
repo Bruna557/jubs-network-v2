@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  post_service:
+    build: ./post-service
+    network_mode: host
+    depends_on:
+      - cassandra
+      - rabbitmq
+
+  user_service:
+    build: ./user-service
+    network_mode: host
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  follow_service:
+    build: ./follow-service
+    network_mode: host
+    depends_on:
+      - neo4j
+      - rabbitmq
+
+  timeline_service:
+    build: ./timeline-service
+    network_mode: host
+    depends_on:
+      - redis
+      - follow_service
+      - post_service
+
+  cassandra:
+    container_name: cassandra-1
+    image: cassandra:4.1.1
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/cassandra
+    ports:
+      - 9042:9042
+    environment:
+      - CASSANDRA_START_RPC=true
+      - CASSANDRA_CLUSTER_NAME=PostsCluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter
+
+  mongo:
+    container_name: mongodb-1
+    image: mongo:4.0.8
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=jubs
+      - MONGO_INITDB_ROOT_USERNAME=jubs
+      - MONGO_INITDB_ROOT_PASSWORD=12345678
+
+  redis:
+    container_name: redis-1
+    image: redis:7.0.10
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/redis
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=psw231377
+      - REDIS_REPLICATION_MODE=master
+    command:
+      - --save 10 100
+      - --requirepass psw231377
+
+  neo4j:
+    container_name: neo4j-1
+    image: neo4j:5.6.0
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/neo4j
+    ports:
+      - 7474:7474
+      - 7687:7687
+    environment:
+      - NEO4J_AUTH=neo4j/12345678
+
+  rabbitmq:
+    container_name: rabbitmq-1
+    image: rabbitmq:3.11.13
+    volumes:
+      - /home/bruna/study/jubs-network-v2/data/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672

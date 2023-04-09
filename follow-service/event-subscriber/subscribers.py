@@ -1,5 +1,6 @@
 import logging
 import pika
+import time
 
 from app import repository
 
@@ -7,9 +8,18 @@ from app import repository
 logging.basicConfig(level=logging.INFO)
 
 
+def connect_to_rabbitmq():
+    try:
+        return pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    except:
+        # RabbitMQ is not up yet
+        time.sleep(30)
+        return connect_to_rabbitmq()
+
+
 def subscribe_to_user_deleted_event():
     logging.info("Subscribing to UserDeleted event")
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost',))
+    connection = connect_to_rabbitmq()
     channel = connection.channel()
 
     channel.exchange_declare(exchange='user-deleted', exchange_type='fanout')
