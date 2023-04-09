@@ -15,10 +15,10 @@ def get_by_users(users, page_size, time, scroll):
         logging.info("Fetching posts")
         if scroll == "down":
             query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time < ? ORDER BY time DESC "
-                                    "LIMIT ? ALLOW FILTERING")
+                                    "LIMIT ?")
         else:
             query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time > ? ORDER BY time DESC "
-                                    "LIMIT ? ALLOW FILTERING")
+                                    "LIMIT ?")
 
         # Turn paging off since Cassandra cannot page queries with both ORDER BY and a IN restriction on the
         # partition key
@@ -44,11 +44,9 @@ def get_by_username(username, page_size, time, scroll):
 
         logging.info("Fetching posts")
         if scroll == "down":
-            query = "SELECT * FROM jubs.posts WHERE username = %s AND time < %s ORDER BY time DESC LIMIT %s ALLOW " \
-                    "FILTERING"
+            query = "SELECT * FROM jubs.posts WHERE username = %s AND time < %s ORDER BY time DESC LIMIT %s"
         else:
-            query = "SELECT * FROM jubs.posts WHERE username = %s AND time > %s ORDER BY time DESC LIMIT %s ALLOW " \
-                    "FILTERING"
+            query = "SELECT * FROM jubs.posts WHERE username = %s AND time > %s ORDER BY time DESC LIMIT %s"
 
         results = session.execute(query, (username, datetime.datetime.fromtimestamp(int(time)), int(page_size)))
         return list(results)
