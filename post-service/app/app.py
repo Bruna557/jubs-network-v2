@@ -1,6 +1,7 @@
 from flask import Flask, json, request, Response
 
 from app import reposistory
+from app.auth import is_authorized
 
 
 app = Flask(__name__)
@@ -26,6 +27,7 @@ def get_posts():
 
 
 @app.route("/posts/<username>", methods=["GET"])
+@is_authorized
 def get_user_posts(username):
     try:
         posts = reposistory.get_by_username(username,
@@ -45,6 +47,7 @@ def get_user_posts(username):
 
 
 @app.route("/posts/<username>", methods=["POST"])
+@is_authorized
 def create_post(username):
     try:
         reposistory.create(username, request.get_json()["body"])
@@ -58,6 +61,7 @@ def create_post(username):
 
 
 @app.route("/posts/<time>/<username>", methods=["PUT"])
+@is_authorized
 def edit_post(time, username):
     try:
         reposistory.edit(username, time, request.get_json()["body"])
@@ -84,6 +88,7 @@ def like_post(time, username):
 
 
 @app.route("/posts/<time>/<username>", methods=["DELETE"])
+@is_authorized
 def delete_post(time, username):
     try:
         reposistory.delete(username, time)
