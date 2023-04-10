@@ -26,26 +26,6 @@ def get_posts():
     return response
 
 
-@app.route("/posts/<username>", methods=["GET"])
-@is_authorized
-def get_user_posts(username):
-    try:
-        posts = reposistory.get_by_username(username,
-                                            request.args.get("page_size") or 5,
-                                            request.args.get("posted_on"),
-                                            request.args.get("scroll") or "down")
-        response = Response(json.dumps(posts))
-        response.headers["Cache-Control"] = "public, max-age=60"
-        response.status = 200
-
-    except Exception as e:
-        response = Response(json.dumps({ "error": str(e) }))
-        response.status = 500
-
-    response.headers["Content-Type"] = "application/json"
-    return response
-
-
 @app.route("/posts/<username>", methods=["POST"])
 @is_authorized
 def create_post(username):
