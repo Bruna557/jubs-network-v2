@@ -8,7 +8,8 @@ def is_authorized(function):
     def decorator(*args, **kwargs):
         authorization_header = request.headers.get("authorization") or ""
         token = authorization_header.replace("Bearer ", "")
-        if token and verify_token(token, request.view_args["username"]):
+
+        if token and verify_token(token, request.view_args["username"] if "username" in request.view_args else None):
             return function(*args, **kwargs)
         return abort(401)
 
