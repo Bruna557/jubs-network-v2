@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 
 @app.route("/posts", methods=["GET"])
+@is_authorized
 def get_posts():
     try:
         posts = reposistory.get_by_users(request.get_json()["users"],
@@ -54,10 +55,11 @@ def edit_post(username, posted_on):
         return response
 
 
-@app.route("/likes/<username>/<posted_on>", methods=["PUT"])
-def like_post(username, posted_on):
+@app.route("/likes/<post_user>/<posted_on>", methods=["PUT"])
+@is_authorized
+def like_post(post_user, posted_on):
     try:
-        reposistory.like(username, posted_on)
+        reposistory.like(post_user, posted_on)
         return "OK"
 
     except Exception as e:
