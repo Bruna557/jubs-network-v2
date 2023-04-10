@@ -2,12 +2,15 @@ from flask import Flask, json, Response
 import logging
 
 from app import repository
+from app.auth import is_authorized
+
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/followings/<username>", methods=["GET"])
+@is_authorized
 def get_followings(username):
     try:
         followings = repository.get_followings(username)
@@ -24,6 +27,7 @@ def get_followings(username):
 
 
 @app.route("/followers/<username>", methods=["GET"])
+@is_authorized
 def get_followers(username):
     try:
         followers = repository.get_followers(username)
@@ -39,10 +43,11 @@ def get_followers(username):
     return response
 
 
-@app.route("/follow/<follower>/<followed>", methods=["POST"])
-def follow(follower, followed):
+@app.route("/follow/<username>/<followed>", methods=["POST"])
+@is_authorized
+def follow(username, followed):
     try:
-        repository.follow(follower, followed)
+        repository.follow(username, followed)
         return "OK"
 
     except Exception as e:
@@ -52,10 +57,11 @@ def follow(follower, followed):
         return response
 
 
-@app.route("/follow/<follower>/<followed>", methods=["DELETE"])
-def unfollow(follower, followed):
+@app.route("/follow/<username>/<followed>", methods=["DELETE"])
+@is_authorized
+def unfollow(username, followed):
     try:
-        repository.unfollow(follower, followed)
+        repository.unfollow(username, followed)
         return "OK"
 
     except Exception as e:

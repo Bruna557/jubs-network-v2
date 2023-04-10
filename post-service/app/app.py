@@ -12,7 +12,7 @@ def get_posts():
     try:
         posts = reposistory.get_by_users(request.get_json()["users"],
                                          request.args.get("page_size") or 5,
-                                         request.args.get("time"),
+                                         request.args.get("posted_on"),
                                          request.args.get("scroll") or "down")
         response = Response(json.dumps(posts))
         response.headers["Cache-Control"] = "public, max-age=60"
@@ -32,7 +32,7 @@ def get_user_posts(username):
     try:
         posts = reposistory.get_by_username(username,
                                             request.args.get("page_size") or 5,
-                                            request.args.get("time"),
+                                            request.args.get("posted_on"),
                                             request.args.get("scroll") or "down")
         response = Response(json.dumps(posts))
         response.headers["Cache-Control"] = "public, max-age=60"
@@ -60,11 +60,11 @@ def create_post(username):
         return response
 
 
-@app.route("/posts/<time>/<username>", methods=["PUT"])
+@app.route("/posts/<username>/<posted_on>", methods=["PUT"])
 @is_authorized
-def edit_post(time, username):
+def edit_post(username, posted_on):
     try:
-        reposistory.edit(username, time, request.get_json()["body"])
+        reposistory.edit(username, posted_on, request.get_json()["body"])
         return "OK"
 
     except Exception as e:
@@ -74,10 +74,10 @@ def edit_post(time, username):
         return response
 
 
-@app.route("/likes/<time>/<username>", methods=["PUT"])
-def like_post(time, username):
+@app.route("/likes/<username>/<posted_on>", methods=["PUT"])
+def like_post(username, posted_on):
     try:
-        reposistory.like(username, time)
+        reposistory.like(username, posted_on)
         return "OK"
 
     except Exception as e:
@@ -87,11 +87,11 @@ def like_post(time, username):
         return response
 
 
-@app.route("/posts/<time>/<username>", methods=["DELETE"])
+@app.route("/posts/<username>/<posted_on>", methods=["DELETE"])
 @is_authorized
-def delete_post(time, username):
+def delete_post(username, posted_on):
     try:
-        reposistory.delete(username, time)
+        reposistory.delete(username, posted_on)
         return "OK"
 
     except Exception as e:

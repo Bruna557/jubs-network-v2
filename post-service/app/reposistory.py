@@ -3,28 +3,27 @@ import logging
 
 from app import database as db
 
-
 logging.basicConfig(level=logging.INFO)
 
 
-def get_by_users(users, page_size, time, scroll):
+def get_by_users(users, page_size, posted_on, scroll):
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
         logging.info("Fetching posts")
         if scroll == "down":
-            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time < ? ORDER BY time DESC "
-                                    "LIMIT ?")
+            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND posted_on < ? ORDER BY posted_on"
+                                    " DESC LIMIT ?")
         else:
-            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND time > ? ORDER BY time DESC "
-                                    "LIMIT ?")
+            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND posted_on > ? ORDER BY posted_on"
+                                    " DESC LIMIT ?")
 
         # Turn paging off since Cassandra cannot page queries with both ORDER BY and a IN restriction on the
         # partition key
         query.fetch_size = None
 
-        results = session.execute(query, (users, datetime.datetime.fromtimestamp(int(time)), int(page_size)))
+        results = session.execute(query, (users, datetime.datetime.fromtimestamp(int(posted_on)), int(page_size)))
         return list(results)
 
     except Exception as e:
@@ -37,18 +36,18 @@ def get_by_users(users, page_size, time, scroll):
         cluster.shutdown()
 
 
-def get_by_username(username, page_size, time, scroll):
+def get_by_username(username, page_size, posted_on, scroll):
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
         logging.info("Fetching posts")
         if scroll == "down":
-            query = "SELECT * FROM jubs.posts WHERE username = %s AND time < %s ORDER BY time DESC LIMIT %s"
+            query = "SELECT * FROM jubs.posts WHERE username = %s AND posted_on < %s ORDER BY posted_on DESC LIMIT %s"
         else:
-            query = "SELECT * FROM jubs.posts WHERE username = %s AND time > %s ORDER BY time DESC LIMIT %s"
+            query = "SELECT * FROM jubs.posts WHERE username = %s AND posted_on > %s ORDER BY posted_on DESC LIMIT %s"
 
-        results = session.execute(query, (username, datetime.datetime.fromtimestamp(int(time)), int(page_size)))
+        results = session.execute(query, (username, datetime.datetime.fromtimestamp(int(posted_on)), int(page_size)))
         return list(results)
 
     except Exception as e:
@@ -68,7 +67,7 @@ def create(username, body):
 
         logging.info("Adding post")
         query = session.prepare("""
-           INSERT INTO jubs.posts (username, body, likes, time)
+           INSERT INTO jubs.posts (username, body, likes, posted_on)
            VALUES (?, ?, ?, ?)
            """)
         session.execute(query, [username, body, 0, datetime.datetime.now()])
@@ -83,13 +82,14 @@ def create(username, body):
         cluster.shutdown()
 
 
-def edit(username, time, body):
+def edit(username, posted_on, body):
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
         logging.info("Updating post")
-        session.execute("UPDATE jubs.posts SET body = %s WHERE username = %s AND time = %s", (body, username, time))
+        session.execute("UPDATE jubs.posts SET body = %s WHERE username = %s AND posted_on = %s",
+                        (body, username, posted_on))
 
     except Exception as e:
         logging.error(f"Failed to update post: {e}")
@@ -101,15 +101,16 @@ def edit(username, time, body):
         cluster.shutdown()
 
 
-def like(username, time):
+def like(username, posted_on):
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
         logging.info("Incrementing likes")
-        post = session.execute("SELECT * FROM jubs.posts WHERE username = %s AND time = %s", (username, time))
+        post = session.execute("SELECT * FROM jubs.posts WHERE username = %s AND posted_on = %s", (username, posted_on))
         likes = post[0].likes + 1
-        session.execute("UPDATE jubs.posts SET likes = %s WHERE username = %s AND time = %s", (likes, username, time))
+        session.execute("UPDATE jubs.posts SET likes = %s WHERE username = %s AND posted_on = %s",
+                        (likes, username, posted_on))
 
     except Exception as e:
         logging.error(f"Failed to increment likes: {e}")
@@ -121,13 +122,13 @@ def like(username, time):
         cluster.shutdown()
 
 
-def delete(username, time):
+def delete(username, posted_on):
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
         logging.info("Deleting post")
-        session.execute("DELETE FROM jubs.posts username = %s AND time = %s", (username, time))
+        session.execute("DELETE FROM jubs.posts username = %s AND posted_on = %s", (username, posted_on))
 
     except Exception as e:
         logging.error(f"Failed to delete post: {e}")

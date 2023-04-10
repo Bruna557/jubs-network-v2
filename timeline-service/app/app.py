@@ -3,24 +3,27 @@ from flask import Flask, json, request, Response
 import logging
 
 from app import database as redis
+from app.auth import is_authorized
 from app.repository import RedisRepository
 from app.services import TimelineService
 
+
 app = Flask(__name__)
-
-logging.basicConfig(level=logging.INFO)
-
 repository = RedisRepository(redis)
 timeline_service = TimelineService(repository)
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/timeline/<username>", methods=["GET"])
+@is_authorized
 def get_timeline(username):
     try:
-        time = request.args.get("time") or int(datetime.timestamp(datetime.now()))
+        posted_on = request.args.get("posted_on") or int(datetime.timestamp(datetime.now()))
         scroll = request.args.get("scroll") or "down"
+        authorization_header = request.headers.get("authorization") or ""
+        token = authorization_header.replace("Bearer ", "")
 
-        posts = timeline_service.get(username, time, scroll)
+        posts = timeline_service.get(username, posted_on, scroll, token)
 
         response = Response(json.dumps(posts))
         response.headers["Cache-Control"] = "public, max-age=60"

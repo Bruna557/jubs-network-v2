@@ -27,8 +27,8 @@ def main():
                                     "(username text" \
                                     ", body text" \
                                     ", likes int" \
-                                    ", time timestamp" \
-                                    ", PRIMARY KEY (username, time))"
+                                    ", posted_on timestamp" \
+                                    ", PRIMARY KEY (username, posted_on))"
         logging.info('Creating posts table in Cassandra')
         session.execute(create_posts_table)
 

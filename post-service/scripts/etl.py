@@ -17,10 +17,7 @@ def transform(df):
     :return: Transformed Pandas Dataframe
     """
     # converting date columns from object to datetime
-    df["time"] =  [pd.Timestamp(t).to_pydatetime() for t in df["time"]]
-
-    # converting uuid columns from string to uuid
-    df["id"] = [uuid.UUID(id) for id in df["id"]]
+    df["posted_on"] =  [pd.Timestamp(t).to_pydatetime() for t in df["posted_on"]]
 
     return df
 
@@ -44,7 +41,7 @@ def main():
 
         logging.info("Loading data into the table")
         query_insert_posts = "INSERT INTO jubs.posts " \
-                                "(username, body, likes, time) " \
+                                "(username, body, likes, posted_on) " \
                                 "VALUES (?, ?, ?, ?)"
         prepared_posts = session.prepare(query_insert_posts)
 
@@ -53,7 +50,7 @@ def main():
                             , (row["username"]
                                , row["body"]
                                , row["likes"]
-                               , row["time"]))
+                               , row["posted_on"]))
 
     except Exception as e:
         logging.error(f"Error loading data into table: {e}")

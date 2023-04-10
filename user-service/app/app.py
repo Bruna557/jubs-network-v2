@@ -6,6 +6,7 @@ import logging
 
 from app import database as db
 from app import publisher
+from app.auth import is_authorized
 from app.settings import APP_SETTINGS
 
 
@@ -14,6 +15,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/users/<username>", methods=["GET"])
+@is_authorized
 def get_user(username):
     try:
         logging.info("Connecting to MongoDB")
@@ -57,6 +59,7 @@ def create_user():
 
 
 @app.route("/users/<username>", methods=["PUT"])
+@is_authorized
 def edit_user(username):
     try:
         logging.info("Connecting to MongoDB")
@@ -82,6 +85,7 @@ def edit_user(username):
 
 
 @app.route("/users/<username>", methods=["DELETE"])
+@is_authorized
 def delete_user(username):
     try:
         logging.info("Connecting to MongoDB")

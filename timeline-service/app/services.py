@@ -13,24 +13,25 @@ class TimelineService:
     def __init__(self, repository):
         self.repository = repository
 
-    def get(self, username, _time, scroll):
+    def get(self, username, posted_on, scroll, token):
         try:
             logging.info("Fetching posts")
             posts = json.loads(self.repository.get(username))
 
-            if posts and ((scroll == "down" and _get_post_timestamp(posts[-1:][0]) < int(_time)) or
-                          (scroll == "up" and _get_post_timestamp(posts[0]) > int(_time))):
+            if posts and ((scroll == "down" and _get_post_timestamp(posts[-1:][0]) < int(posted_on)) or
+                          (scroll == "up" and _get_post_timestamp(posts[0]) > int(posted_on))):
                 logging.info("Cache hit - getting posts from cache")
             else:
                 logging.info("Cache miss - getting posts from Post Service")
-                followings_result = requests.get(f"http://localhost:5005/follows/followings/{username}")
+                followings_result = requests.get(f"http://localhost:5005/follows/followings/{username}",
+                                                 headers={"Authorization": f"Bearer {token}"})
 
                 if followings_result.status_code != 200:
                     raise Exception(followings_result.text)
 
-                posts_result = requests.get(f"http://localhost:5006/posts?page_size=5&time={_time}&scroll={scroll}",
+                posts_result = requests.get(f"http://localhost:5006/posts?page_size=5&posted_on={posted_on}&scroll={scroll}",
                                             data=json.dumps({"users": json.loads(followings_result.text)}),
-                                            headers={"Content-Type": "application/json"})
+                                            headers={"Content-Type": "application/json", "Authorization": f"Bearer {token}"})
 
                 if posts_result.status_code != 200:
                     raise Exception(posts_result.text)
