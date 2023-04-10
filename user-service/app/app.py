@@ -65,15 +65,17 @@ def edit_user(username):
         logging.info("Connecting to MongoDB")
         jubs_db = db.mongo_connection()
 
-        if password := request.get_json()["password"]:
+        data = request.get_json()
+
+        if "password" in data:
             logging.info("Updating password")
-            jubs_db.users.update_one({"username": username}, {"$set": {"password": password}})
-        if bio := request.get_json()["bio"]:
+            jubs_db.users.update_one({"username": username}, {"$set": {"password": data["password"]}})
+        if "bio" in data:
             logging.info("Updating bio")
-            jubs_db.users.update_one({"username": username}, {"$set": {"bio": bio}})
-        if picture := request.get_json()["picture"]:
+            jubs_db.users.update_one({"username": username}, {"$set": {"bio": data["bio"]}})
+        if "picture" in data:
             logging.info("Updating picture")
-            jubs_db.users.update_one({"username": username}, {"$set": {"picture": picture}})
+            jubs_db.users.update_one({"username": username}, {"$set": {"picture": data["picture"]}})
         return "OK"
 
     except Exception as e:

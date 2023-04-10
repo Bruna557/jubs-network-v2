@@ -16,8 +16,11 @@ def transform(df):
     :param df: Pandas Dataframe
     :return: Transformed Pandas Dataframe
     """
-    # converting date columns from object to datetime
-    df["posted_on"] =  [pd.Timestamp(t).to_pydatetime() for t in df["posted_on"]]
+    # converting date columns from object to timestamp
+    df["posted_on"] =  [pd.Timestamp(t) for t in df["posted_on"]]
+
+    # converting uuid columns from string to uuid
+    df["id"] = [uuid.UUID(id) for id in df["id"]]
 
     return df
 
