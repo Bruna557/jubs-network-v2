@@ -36,6 +36,29 @@ def get_user(username):
     return response
 
 
+@app.route("/users", methods=["GET"])
+@is_authorized
+def search_user():
+    try:
+        logging.info("Connecting to MongoDB")
+        jubs_db = db.mongo_connection()
+
+        logging.info("Searching users")
+        starts_with = request.args.get("username")
+        users = jubs_db.users.find({"username":{"$regex":f"^{starts_with}"}})
+        response = Response(json_util.dumps(users))
+        response.headers["Cache-Control"] = "public, max-age=60"
+        response.status = 200
+
+    except Exception as e:
+        logging.error(f"Failed to search users: {e}")
+        response = Response(json_util.dumps({"error": str(e)}))
+        response.status = 500
+
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+
 @app.route("/users", methods=["POST"])
 def create_user():
     try:
