@@ -1,4 +1,5 @@
 from bson import json_util
+import datetime
 from flask import Flask, request, Response
 import hashlib
 import jwt
@@ -131,30 +132,60 @@ def delete_user(username):
 
 @app.route("/auth/login", methods=["POST"])
 def login():
-    data = request.get_json()
-    username = data["username"]
-    password = data["password"]
+    try:
+        data = request.get_json()
+        username = data["username"]
+        password = data["password"]
 
-    hash_object = hashlib.sha1(bytes(password, "utf-8"))
-    hashed_password = hash_object.hexdigest()
+        hash_object = hashlib.sha1(bytes(password, "utf-8"))
+        hashed_password = hash_object.hexdigest()
 
-    logging.info("Connecting to MongoDB")
-    jubs_db = db.mongo_connection()
+        logging.info("Connecting to MongoDB")
+        jubs_db = db.mongo_connection()
 
-    logging.info("Authenticating user")
-    user = jubs_db.users.find_one({"username": username, "password": hashed_password})
+        logging.info("Authenticating user")
+        user = jubs_db.users.find_one({"username": username, "password": hashed_password})
 
-    if not user:
-        logging.error(f"Login failed: invalid credentials")
-        response = Response(json_util.dumps({"error": "Invalid credentials"}))
-        response.status = 401
-    else:
-        encoded_jwt = jwt.encode({"user": user["username"]}, APP_SETTINGS["SECRET_KEY"], algorithm="HS256")
-        response = Response(json_util.dumps({"token": encoded_jwt}))
-        response.status = 200
+        if not user:
+            logging.error(f"Login failed: invalid credentials")
+            response = Response(json_util.dumps({"error": "Invalid credentials"}))
+            response.status = 401
+        else:
+            encoded_jwt = jwt.encode({"user": user["username"]}, APP_SETTINGS["SECRET_KEY"], "HS256",
+                                     {"exp": datetime.datetime.timestamp(datetime.datetime.now() + datetime.timedelta(hours=24))})
+            response = Response(json_util.dumps({"token": encoded_jwt}))
+            response.status = 200
+
+    except Exception as e:
+        logging.error(f"Failed to authenticate user: {e}")
+        response = Response(json_util.dumps({"error": str(e)}))
+        response.status = 500
 
     response.headers["Content-Type"] = "application/json"
     return response
+
+
+@app.route("/auth/logout/<username>", methods=["DELETE"])
+@is_authorized
+def logout(username):
+    try:
+        authorization_header = request.headers.get("authorization")
+        token = authorization_header.replace("Bearer ", "")
+
+        logging.info("Connecting to MongoDB")
+        jubs_db = db.mongo_connection()
+
+        logging.info("Adding token to blacklist")
+        jubs_db.blacklist.insert_one({"username": username, "token": token})
+
+        return "OK"
+
+    except Exception as e:
+        logging.error(f"Failed to log out: {e}")
+        response = Response(json_util.dumps({"error": str(e)}))
+        response.status = 500
+        response.headers["Content-Type"] = "application/json"
+        return response
 
 
 @app.route("/auth/token/verify", methods=["POST"])
@@ -162,6 +193,16 @@ def verify():
     try:
         token = request.get_json()["token"]
         decoded = jwt.decode(token, APP_SETTINGS["SECRET_KEY"], algorithms=["HS256"])
+
+        logging.info("Connecting to MongoDB")
+        jubs_db = db.mongo_connection()
+
+        blacklisted = jubs_db.blacklist.find({"username": decoded["user"]})
+
+        for document in blacklisted:
+            if token == document["token"]:
+                raise Exception("Token is blacklisted")
+
         response = Response(json_util.dumps(decoded))
         response.status_code = 200
 
