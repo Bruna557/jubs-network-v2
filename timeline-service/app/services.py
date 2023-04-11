@@ -29,8 +29,11 @@ class TimelineService:
                 if followings_result.status_code != 200:
                     raise Exception(followings_result.text)
 
+                users = json.loads(followings_result.text)
+                users.append(username)
+
                 posts_result = requests.get(f"http://localhost:5006/posts?page_size=5&posted_on={posted_on}&scroll={scroll}",
-                                            data=json.dumps({"users": json.loads(followings_result.text)}),
+                                            data=json.dumps({"users": users}),
                                             headers={"Content-Type": "application/json", "Authorization": f"Bearer {token}"})
 
                 if posts_result.status_code != 200:
