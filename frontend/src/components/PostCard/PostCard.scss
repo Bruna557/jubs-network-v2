@@ -1,10 +1,34 @@
 .card {
-    width: 700px;
-    margin: 10px;
+  width: 40vw;
+  margin: 10px;
 
-    img {
-        border-radius: 50%;
-        width: 60px;
-        margin: 10px;
-    }
+  img {
+    border-radius: 50%;
+    width: 60px;
+    margin: 10px 28px 0;
+  }
+
+  .posted-on {
+    text-align: end;
+    padding: 15px 30px 0 0;
+    color: #848484;
+    font-size: 0.85rem;
+  }
+
+  .card-text {
+    margin-left: 15px;
+  }
+
+  .likes {
+    display: flex;
+    justify-content: end;
+    align-items: baseline;
+  }
+
+  .like-button {
+    text-align: end;
+    background-color: #5b07c7;
+    border-color: #5b07c7;
+    margin-left: 20px;
+  }
 }
