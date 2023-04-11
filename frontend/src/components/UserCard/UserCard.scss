@@ -1,0 +1,16 @@
+.user-card{
+  padding-left: 30px;
+  align-self: baseline;
+
+  .profile-picture {
+    img {
+      border-radius: 50%;
+      width: 60px !important;
+    }
+  }
+
+  .username {
+    align-self: end;
+    margin-left: 10px;
+  }
+}

@@ -1,5 +1,4 @@
-import { Button, Row, Col } from 'react-bootstrap';
-import Card from 'react-bootstrap/Card';
+import { Button, Row, Col, Card } from 'react-bootstrap';
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -23,7 +22,6 @@ const PostCard = (post: Post) => {
               {post.likes}
               <Button className="like-button"><FontAwesomeIcon icon={faThumbsUp} /></Button>
             </Col>
-
           </Row>
         </Card.Body>
       </Card>

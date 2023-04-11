@@ -2,9 +2,9 @@ import { User } from "../../types"
 
 let users: User[] = [
     {
-        "username": "bruna",
-        "bio": "I am a software develop interested in animes and mangas.",
-        "picture": "https://cdn-icons-png.flaticon.com/512/99/99428.png"
+        "username": "lilith",
+        "bio": "I am a cat interested in shoelaces and garbage.",
+        "picture": "https://cdn-icons-png.flaticon.com/512/2373/2373010.png"
     },
     {
         "username": "jubs",
