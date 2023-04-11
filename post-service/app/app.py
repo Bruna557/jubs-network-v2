@@ -12,7 +12,7 @@ app = Flask(__name__)
 def get_posts():
     try:
         posts = reposistory.get_by_users(request.get_json()["users"],
-                                         request.args.get("page_size") or 5,
+                                         request.args.get("page_size"),
                                          request.args.get("posted_on"),
                                          request.args.get("scroll") or "down")
         response = Response(json.dumps(posts))
