@@ -6,7 +6,7 @@ let posts = [
         "posted_on": "Sat, 29 Apr 2023 18:38:08 GMT",
         "body": "Quisque vel ligula feugiat, viverra lorem et, pellentesque lacus. Vestibulum hendrerit posuere euismod. Maecenas scelerisque, arcu et malesuada auctor, nulla justo efficitur sem, non ultricies risus mauris vitae sem.",
         "likes": 10,
-        "picture": "https://cdn-icons-png.flaticon.com/512/99/99428.png"
+        "picture": "https://cdn-icons-png.flaticon.com/512/5968/5968350.png"
     },
     {
         "username": "ryuk",
@@ -27,7 +27,7 @@ let posts = [
         "posted_on": "Sat, 29 Apr 2023 16:08:27 GMT",
         "body": "Pellentesque nisl mi, bibendum nec tempus non, tempus ac massa. In condimentum laoreet rutrum. Pellentesque vestibulum orci nibh, in posuere nisi luctus a. Curabitur id pretium nunc. Pellentesque quis urna non nisl tempus euismod gravida in sem.",
         "likes": 26,
-        "picture": "https://cdn-icons-png.flaticon.com/512/4540/4540592.png"
+        "picture": "https://cdn-icons-png.flaticon.com/512/8876/8876508.png"
     },
     {
         "username": "ryuk",

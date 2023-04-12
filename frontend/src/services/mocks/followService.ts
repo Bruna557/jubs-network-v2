@@ -9,7 +9,7 @@ let users: User[] = [
     {
         "username": "jubs",
         "bio": "I am a dog interested in toys, bones and walks.",
-        "picture": "https://cdn-icons-png.flaticon.com/512/4540/4540592.png"
+        "picture": "https://cdn-icons-png.flaticon.com/512/8876/8876508.png"
     },
     {
         "username": "ryuk",

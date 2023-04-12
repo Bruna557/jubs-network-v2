@@ -24,7 +24,7 @@ const BaseLayout = () => {
 
   return (
     <>
-      <Navigation />
+      <Navigation {...user}/>
       <Row className="content">
         <Col className="left-panel" md="3">
           <UserCard {...user} follow={false}/>
