@@ -1,12 +1,16 @@
 .card {
   width: 40vw;
   margin: 10px;
-  // text-align: -webkit-center;
 
   img {
     border-radius: 50%;
     width: 60px;
     margin: 10px 28px 0;
+  }
+
+  .username {
+    margin-left: 10px;
+    align-self: end;
   }
 
   .posted-on {

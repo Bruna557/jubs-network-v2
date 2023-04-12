@@ -10,4 +10,5 @@ export type User = {
   username: string,
   bio: string,
   picture: string
+  follow?: boolean
 }

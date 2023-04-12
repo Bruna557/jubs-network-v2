@@ -10,9 +10,10 @@ const PostCard = (post: Post) => {
     <>
       <Card>
         <Row>
-          <Col>
+          <Col md="2">
             <Card.Img variant="top" src={post.picture} />
           </Col>
+          <Col className="username"><p>{post.username}</p></Col>
           <Col className="posted-on">{post.posted_on.substring(5, 25)}</Col>
         </Row>
         <Card.Body>

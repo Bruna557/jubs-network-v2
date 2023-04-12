@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Outlet } from "react-router-dom"
-import { Row, Col, Button } from "react-bootstrap"
+import { Row, Col } from "react-bootstrap"
 
 import Navigation from "../components/Navigation/Navigations"
 import UserCard from "../components/UserCard/UserCard"
@@ -11,7 +11,7 @@ import { User } from "../types"
 import "./BaseLayout.scss"
 
 const BaseLayout = () => {
-  const [user, setUser] = useState<User>({ username: "", bio:"", picture:"" })
+  const [user, setUser] = useState<User>({ username: "", bio:"", picture:"", follow: false })
   const [recommendation, setRecommendation] = useState<User[]>([])
 
   fetchUser("bruna").then(result => {
@@ -27,24 +27,19 @@ const BaseLayout = () => {
       <Navigation />
       <Row className="content">
         <Col className="left-panel" md="3">
-          <UserCard {...user} />
+          <UserCard {...user} follow={false}/>
           <p className="people-text">People you may know</p>
           {recommendation.map((r: User) =>
-            <Row>
-                <Col md="8">
-              <UserCard {...r} />
-              </Col>
-              <Col>
-                <Button>Follow</Button>
-              </Col>
-            </Row>
+            <Col>
+              <UserCard {...r } follow={true}/>
+            </Col>
           )}
         </Col>
         <Col className="outlet" md="6">
           <Outlet />
         </Col>
         <Col className="right-panel" md="3">
-          <img src="/assets/ad.png" />
+          <img className="ad" src="/assets/ad.png" />
         </Col>
       </Row>
     </>
