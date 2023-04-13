@@ -1,0 +1,26 @@
+.login {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10%;
+
+  .login-form {
+    width: 250px;
+  }
+
+  .username-label {
+    margin: 10px 0 5px 0;
+  }
+
+  .password-label {
+    margin: 5px 0 5px 0;
+  }
+
+  .buttons {
+    justify-content: space-evenly;
+
+    .btn {
+      width: 90px;
+      margin-top: 20px;
+    }
+  }
+}

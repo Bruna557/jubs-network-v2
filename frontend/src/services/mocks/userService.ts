@@ -25,3 +25,17 @@ export const changePicture = async (username: string, picture: string) => {
 export const changePassword = async (username: string, password: string) => {
     console.log("Changed password " + password)
 }
+
+export const login = async (username: string, password: string) => {
+    console.log(username + " logged in with password " + password)
+    return new Promise((resolve, reject) => {
+        resolve(true)
+    })
+}
+
+export const register = async (username: string, password: string) => {
+    console.log(username + " signed up with password " + password)
+    return new Promise((resolve, reject) => {
+        resolve(true)
+    })
+}
