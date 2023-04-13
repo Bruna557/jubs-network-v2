@@ -79,7 +79,7 @@ const Navigation = (user: User) => {
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button type="submit" variant="primary" onClick={handleSubmit}>
+          <Button variant="primary" onClick={handleSubmit}>
             Save
           </Button>
         </Modal.Footer>

@@ -1,4 +1,4 @@
-import { Button, Row, Col, Card } from 'react-bootstrap';
+import { Button, Row, Col, Card } from 'react-bootstrap'
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 

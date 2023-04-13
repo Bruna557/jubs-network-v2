@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Outlet } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 import { Row, Col } from "react-bootstrap"
 
 import Navigation from "../components/Navigation/Navigations"
@@ -7,15 +8,17 @@ import UserCard from "../components/UserCard/UserCard"
 import { fetchUser } from "../services/mocks/userService"
 import { fetchRecommendation } from "../services/mocks/followService"
 import { User } from "../types"
+import { getUser, setUser } from "../store/userSlice"
 
 import "./BaseLayout.scss"
 
 const BaseLayout = () => {
-  const [user, setUser] = useState<User>({ username: "", bio:"", picture:"", follow: false })
+  const dispatch = useDispatch()
+  const user = useSelector(getUser)
   const [recommendation, setRecommendation] = useState<User[]>([])
 
   fetchUser("bruna").then(result => {
-    setUser(result)
+    dispatch(setUser(result))
   })
 
   fetchRecommendation("bruna").then(result => {
@@ -36,7 +39,7 @@ const BaseLayout = () => {
           )}
         </Col>
         <Col className="outlet" md="6">
-          <Outlet />
+          <Outlet/>
         </Col>
         <Col className="right-panel" md="3">
           <img className="ad" src="/assets/ad.png" />
