@@ -17,10 +17,10 @@ const Timeline = () => {
   })
 
   return (
-    <>
+    <div className="timeline">
       <WritePost {...user}/>
       {posts.map((post: Post) => <PostCard {...post} />)}
-    </>
+    </div>
   )
 }
 

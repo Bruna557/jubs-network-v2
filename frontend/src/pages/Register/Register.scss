@@ -1,4 +1,4 @@
-.login {
+.register {
   display: flex;
   height: 100%;
   justify-content: space-evenly;
@@ -8,7 +8,7 @@
     text-align: center;
   }
 
-  .login-form {
+  .register-form {
     width: 250px;
   }
 
@@ -16,7 +16,7 @@
     margin: 10px 0 5px 0;
   }
 
-  .password-label {
+  .password-label, .picture-label, .bio-label {
     margin: 5px 0 5px 0;
   }
 
@@ -29,12 +29,12 @@
     }
   }
 
-  .no-account {
+  .yes-account {
     justify-content: space-evenly;
     margin-top: 40px;
   }
 
-  .register {
+  .login {
     text-align: center;
   }
 }

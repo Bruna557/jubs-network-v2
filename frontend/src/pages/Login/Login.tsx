@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { Button, Row } from "react-bootstrap"
 
 import { login, register } from "../../services/mocks/userService"
@@ -18,18 +18,10 @@ const Login = () => {
     })
   }
 
-  const handleSignUp = () => {
-    register(username, password).then(success => {
-      if(success) {
-        navigate("/")
-      }
-    })
-  }
-
   return (
     <div className="login">
       <form className="login-form">
-        <Row><h3>Sign in or sign up</h3></Row>
+        <Row><h3>Sign in</h3></Row>
         <Row className="username-label">Username:</Row>
         <Row>
           <input value={username} placeholder="username" onChange={(e) => setUsername(e.target.value)} />
@@ -39,8 +31,13 @@ const Login = () => {
           <input value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} />
         </Row>
         <Row className="buttons">
-          <Button variant="primary" onClick={() => handleSignUp()}>Sign Up</Button>
           <Button variant="primary" onClick={() => handleSignIn()}>Sign In</Button>
+        </Row>
+        <Row className="no-account">
+          Don't have an account?
+        </Row>
+        <Row className="register">
+          <Link to="/register">Register</Link>
         </Row>
       </form>
     </div>

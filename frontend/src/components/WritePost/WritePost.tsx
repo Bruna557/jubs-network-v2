@@ -15,7 +15,7 @@ const WritePost = (user: User) => {
 
   return (
     <>
-      <Card>
+      <Card className="write-post">
         <Row>
           <Col md="2">
             <Card.Img variant="top" src={user.picture} />
@@ -23,12 +23,14 @@ const WritePost = (user: User) => {
           <Col className="username"><p>{user.username}</p></Col>
         </Row>
         <Card.Body>
-          <form>
-            <label>
-            <textarea value={postBody} onChange={(e) => setPostBody(e.target.value)} />
-            </label>
-          </form>
-          <Button variant="primary" onClick={handleSubmit}>Post</Button>
+          <Row>
+            <form>
+              <textarea value={postBody} placeholder="Write a post..." onChange={(e) => setPostBody(e.target.value)} />
+            </form>
+          </Row>
+          <Row className="button-row">
+            <Button variant="primary" onClick={handleSubmit}>Post</Button>
+          </Row>
         </Card.Body>
       </Card>
     </>

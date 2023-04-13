@@ -35,8 +35,7 @@ const BaseLayout = () => {
           {recommendation.map((r: User) =>
             <Col>
               <UserCard {...r } follow={true}/>
-            </Col>
-          )}
+            </Col>)}
         </Col>
         <Col className="outlet" md="6">
           <Outlet/>

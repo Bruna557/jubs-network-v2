@@ -2,7 +2,7 @@ import { User } from "../../types"
 
 let user: User = {
     "username": "bruna",
-    "bio": "I am a software developer interested in animes and mangas.",
+    "bio": "I am a software developer interested in programming and software architecture.",
     "picture": "https://cdn-icons-png.flaticon.com/512/5968/5968350.png"
 }
 
@@ -51,7 +51,7 @@ export const login = async (username: string, password: string) => {
     })
 }
 
-export const register = async (username: string, password: string) => {
+export const register = async (username: string, password: string, bio: string, picture: string) => {
     console.log(username + " signed up with password " + password)
     return new Promise((resolve, reject) => {
         resolve(true)

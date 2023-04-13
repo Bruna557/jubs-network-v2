@@ -13,6 +13,7 @@ const Navigation = (user: User) => {
   const [showModal, setShowModal] = useState(false)
   const [modalType, setModalType] = useState("")
   const [modalValue, setModalValue] = useState("")
+  const [searchValue, setSearchValue] = useState("")
 
   const handleCloseModal = () => setShowModal(false)
   const handleShowModal = (type: string) => {
@@ -47,10 +48,13 @@ const Navigation = (user: User) => {
               <Form className="d-flex ptb5">
                 <Form.Control
                   type="text"
-                  placeholder="Search users" />
-                <Button className="search-button" type="submit">
-                  <FontAwesomeIcon icon={faSearch} />
-                </Button>
+                  placeholder="Search users"
+                  onChange={(e) => setSearchValue(e.target.value)}/>
+                <Link to={{ pathname: '/search', search: `q=${searchValue}`}}>
+                  <Button className="search-button" type="submit">
+                    <FontAwesomeIcon icon={faSearch} />
+                  </Button>
+                </Link>
               </Form>
             </Nav>
             <Nav>
@@ -58,7 +62,7 @@ const Navigation = (user: User) => {
                 <NavDropdown.Item onClick={() => handleShowModal("bio")}>Change bio</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("picture")}>Change picture</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("password")}>Change password</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => navigate('/login')}>Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/login")}>Logout</NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
