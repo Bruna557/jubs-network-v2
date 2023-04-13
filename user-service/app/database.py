@@ -10,10 +10,10 @@ def mongo_connection():
     Connection object for MongoDB
     :return: database
     """
-    client = MongoClient(host='localhost',
+    client = MongoClient(host="localhost",
                          port=27017,
-                         username='jubs',
-                         password='12345678',
+                         username="jubs",
+                         password="12345678",
                          authSource="admin")
     db = client["jubs"]
     return db

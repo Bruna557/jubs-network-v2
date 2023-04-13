@@ -13,7 +13,7 @@ const Login = () => {
   const handleSignIn = () => {
     login(username, password).then(success => {
       if(success) {
-        navigate('/')
+        navigate("/")
       }
     })
   }
@@ -21,7 +21,7 @@ const Login = () => {
   const handleSignUp = () => {
     register(username, password).then(success => {
       if(success) {
-        navigate('/')
+        navigate("/")
       }
     })
   }

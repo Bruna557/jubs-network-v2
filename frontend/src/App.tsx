@@ -14,7 +14,7 @@ const App = () => {
         <Route element={<BaseLayout />}>
           <Route index element={<Timeline />} />
         </Route>
-        <Route path='login' element={<Login />} />
+        <Route path="login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   )

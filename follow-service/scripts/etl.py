@@ -9,17 +9,17 @@ logging.basicConfig(level=logging.INFO)
 
 
 def add_nodes(df, session):
-    for user in df['follower']:
+    for user in df["follower"]:
         query = "MERGE (:Person {name: $username})"
         session.run(query, username=user)
 
-    for user in df['followed']:
+    for user in df["followed"]:
         query = "MERGE (:Person {name: $username})"
         session.run(query, username=user)
 
 
 def add_relationships(df, session):
-    for follower, followed in zip(df['follower'], df['followed']):
+    for follower, followed in zip(df["follower"], df["followed"]):
         query = """
             MATCH (u1:Person {name: $user1})
             MATCH (u2:Person {name: $user2})

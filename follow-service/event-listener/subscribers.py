@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 
 def connect_to_rabbitmq():
     try:
-        return pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        return pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
     except:
         # RabbitMQ is not up yet
         time.sleep(30)
@@ -22,15 +22,15 @@ def subscribe_to_user_deleted_event():
     connection = connect_to_rabbitmq()
     channel = connection.channel()
 
-    channel.exchange_declare(exchange='user-deleted', exchange_type='fanout')
+    channel.exchange_declare(exchange="user-deleted", exchange_type="fanout")
 
-    result = channel.queue_declare(queue='', exclusive=True)
+    result = channel.queue_declare(queue="", exclusive=True)
     queue_name = result.method.queue
 
-    channel.queue_bind(exchange='user-deleted', queue=queue_name)
+    channel.queue_bind(exchange="user-deleted", queue=queue_name)
 
     def callback(ch, method, properties, body):
-        username = body.decode('utf-8')
+        username = body.decode("utf-8")
         logging.info(f"Received UserDeleted event: {username}")
         repository.delete_user(username)
 

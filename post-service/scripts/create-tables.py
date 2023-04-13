@@ -12,7 +12,7 @@ def main():
     """
     session, cluster = db.cassandra_connection()
 
-    logging.info('Creating keyspace jubs in Cassandra')
+    logging.info("Creating keyspace jubs in Cassandra")
     session.execute("""
         CREATE KEYSPACE IF NOT EXISTS jubs
         WITH REPLICATION =
@@ -29,7 +29,7 @@ def main():
                                     ", likes int" \
                                     ", posted_on timestamp" \
                                     ", PRIMARY KEY (username, posted_on))"
-        logging.info('Creating posts table in Cassandra')
+        logging.info("Creating posts table in Cassandra")
         session.execute(create_posts_table)
 
     except Exception as e:

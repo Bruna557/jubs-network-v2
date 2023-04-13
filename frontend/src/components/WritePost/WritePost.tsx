@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Row, Col, Card } from 'react-bootstrap'
+import { Button, Row, Col, Card } from "react-bootstrap"
 
 import { User } from "../../types"
 import { post } from "../../services/mocks/postService"
