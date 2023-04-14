@@ -15,7 +15,10 @@ const Navigation = (user: User) => {
   const [modalValue, setModalValue] = useState("")
   const [searchValue, setSearchValue] = useState("")
 
-  const handleCloseModal = () => setShowModal(false)
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setModalValue("")
+  }
   const handleShowModal = (type: string) => {
     setShowModal(true)
     setModalType(type)
@@ -49,16 +52,17 @@ const Navigation = (user: User) => {
                 <Form.Control
                   type="text"
                   placeholder="Search users"
-                  onChange={(e) => setSearchValue(e.target.value)}/>
-                <Link to={{ pathname: '/search', search: `q=${searchValue}`}}>
-                  <Button className="search-button" type="submit">
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  value={searchValue}/>
+                <Link to={{ pathname: '/search', search: `q=${searchValue}` }} onClick={() => setSearchValue("")}>
+                  <Button className="search-button">
                     <FontAwesomeIcon icon={faSearch} />
                   </Button>
                 </Link>
               </Form>
             </Nav>
             <Nav>
-              <NavDropdown title={<img src={user.picture} alt="profile"></img>} id="profile-picture">
+              <NavDropdown title={<img src={user.picture} alt="profile"></img>} id="profile-picture" align="end">
                 <NavDropdown.Item onClick={() => handleShowModal("bio")}>Change bio</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("picture")}>Change picture</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("password")}>Change password</NavDropdown.Item>
@@ -74,8 +78,9 @@ const Navigation = (user: User) => {
           <Modal.Title>New {modalType}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form>
-            <input value={modalValue} onChange={(e) => setModalValue(e.target.value)} />
+          <form className="modal-form">
+            {modalType !== "bio" && <input value={modalValue} onChange={(e) => setModalValue(e.target.value)} />}
+            {modalType === "bio" && <textarea value={modalValue} onChange={(e) => setModalValue(e.target.value)} />}
           </form>
         </Modal.Body>
         <Modal.Footer>

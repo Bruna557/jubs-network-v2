@@ -11,5 +11,4 @@ export type User = {
   bio: string,
   picture: string
   follow?: boolean
-  isLoggedIn?: boolean
 }

@@ -1,9 +1,15 @@
+import { useSelector } from "react-redux"
 import { Row, Col, Button } from "react-bootstrap"
 
 import { User } from "../../types"
+import { follow } from "../../services/mocks/followService"
+import { getUser } from "../../store/userSlice"
+
 import "./UserCard.scss"
 
 const UserCard = (user: User) => {
+  const u = useSelector(getUser)
+
   return (
     <div className="user-card">
       <Row>
@@ -15,7 +21,7 @@ const UserCard = (user: User) => {
         </Col>
         {user.follow &&
           <Col>
-            <Button>Follow</Button>
+            <Button onClick={() => follow(u.username, user.username)}>Follow</Button>
           </Col>}
       </Row>
       <Row className="bio">

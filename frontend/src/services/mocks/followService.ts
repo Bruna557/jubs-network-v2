@@ -23,3 +23,7 @@ export const fetchRecommendation = async (username: string): Promise<User[]> => 
         resolve(users)
     })
 }
+
+export const follow = async (username: string, followed:string) => {
+    console.log(username + " followed " + followed)
+}

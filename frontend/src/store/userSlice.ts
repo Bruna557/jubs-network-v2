@@ -12,7 +12,6 @@ const initialState: UserState = {
         username: "",
         bio: "",
         picture: "",
-        isLoggedIn: false
     }
 }
 
@@ -32,20 +31,15 @@ export const userSlice = createSlice({
     reducers: {
         setUser: (state:UserState, action: PayloadAction<User>) => {
             state.user = action.payload
-        },
-        setIsLoggedIn: (state: UserState, action: PayloadAction<boolean>) => {
-            state.user.isLoggedIn = action.payload
         }
     },
 })
 
 // Actions
-export const { setIsLoggedIn } = userSlice.actions
 export const { setUser } = userSlice.actions
 
 // Selectors
 export const getUser = (state: RootState) => state.user.user
-export const getIsLoggedIn = (state: RootState) => state.user.user.isLoggedIn
 
 // Reducer
 export default userSlice.reducer

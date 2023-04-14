@@ -31,12 +31,10 @@ export const fetchUser = async (username: string): Promise<User> => {
 }
 
 export const changeBio = async (username: string, bio: string) => {
-    user.bio = bio
     console.log("Changed bio " + bio)
 }
 
 export const changePicture = async (username: string, picture: string) => {
-    user.picture = picture
     console.log("Changed picture " + picture)
 }
 

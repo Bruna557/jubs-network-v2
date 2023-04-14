@@ -3,6 +3,7 @@ import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { Post } from "../../types"
+import { like } from "../../services/mocks/postService"
 import "./PostCard.scss"
 
 const PostCard = (post: Post) => {
@@ -21,7 +22,9 @@ const PostCard = (post: Post) => {
           <Row>
             <Col lg="12" className="likes">
               {post.likes}
-              <Button className="like-button"><FontAwesomeIcon icon={faThumbsUp} /></Button>
+              <Button className="like-button" onClick={() => like(post.username, post.posted_on)}>
+                <FontAwesomeIcon icon={faThumbsUp} />
+              </Button>
             </Col>
           </Row>
         </Card.Body>
