@@ -1,0 +1,14 @@
+.infinite-scroll-component {
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+
+  .spinner {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .end {
+    text-align: center;
+  }
+}

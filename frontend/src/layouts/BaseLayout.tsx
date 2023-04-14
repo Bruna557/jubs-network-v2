@@ -28,7 +28,7 @@ const BaseLayout = () => {
   return (
     <>
       <Navigation {...user}/>
-      <Row className="content">
+      <Row className="content" id="scrollableDiv">
         <Col className="left-panel" md="3">
           <UserCard {...user} follow={false}/>
           <p className="people-text">People you may know</p>

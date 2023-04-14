@@ -13,16 +13,18 @@ import "./Timeline.scss"
 
 const Timeline = () => {
   const [posts, setPosts] = useState<Post[]>([])
+  const [hasMore, setHasMore] = useState(true)
   const [pageNumber, setPageNumber] = useState(1)
   const user = useSelector(getUser)
 
   useEffect(() => {
     nextPage()
-  })
+  }, [])
 
   const nextPage = () => {
     fetchTimeline(user.username, pageNumber).then(result => {
-      setPosts(result)
+      setPosts([...posts, ...result.posts])
+      setHasMore(result.hasMore)
       setPageNumber(pageNumber + 1)
     })
   }
@@ -33,12 +35,10 @@ const Timeline = () => {
       <InfiniteScroll
         dataLength={posts.length}
         next={nextPage}
-        style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
-        inverse={true}
-        hasMore={true}
-        loader={<FontAwesomeIcon icon={faSpinner} spin />}
+        hasMore={hasMore}
+        loader={<FontAwesomeIcon className="spinner" icon={faSpinner} spin/>}
         endMessage={
-          <p style={{ textAlign: 'center' }}>
+          <p className="end">
             <b>Yay! You have seen it all</b>
           </p>
         }
@@ -49,5 +49,7 @@ const Timeline = () => {
     </div>
   )
 }
+
+
 
 export default Timeline
