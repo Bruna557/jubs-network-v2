@@ -9,7 +9,7 @@ import "./SearchResult.scss"
 
 const SearchResult = () => {
   const [users, setUsers] = useState<User[]>([])
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     search(searchParams.get("q") || "").then(result => {
@@ -21,8 +21,8 @@ const SearchResult = () => {
     <>
       <h4>Search result</h4>
       <div className="results">
-        {users.map((r: User) =>
-          <Col>
+        {users.map((r: User, i:number) =>
+          <Col key={i}>
             <UserCard {...r } follow={true}/>
           </Col>)}
       </div>

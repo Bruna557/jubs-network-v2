@@ -39,7 +39,7 @@ const Navigation = (user: User) => {
         <Container>
           <Navbar.Brand>
             <Link to="/">
-              <img src="/assets/logo.png" alt="logo-"></img>
+              <img src="/assets/logo.png" alt="logo"></img>
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -58,7 +58,7 @@ const Navigation = (user: User) => {
               </Form>
             </Nav>
             <Nav>
-              <NavDropdown title={<img src={user.picture} alt="profile-picture"></img>} id="profile-picture">
+              <NavDropdown title={<img src={user.picture} alt="profile"></img>} id="profile-picture">
                 <NavDropdown.Item onClick={() => handleShowModal("bio")}>Change bio</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("picture")}>Change picture</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("password")}>Change password</NavDropdown.Item>

@@ -32,8 +32,8 @@ const BaseLayout = () => {
         <Col className="left-panel" md="3">
           <UserCard {...user} follow={false}/>
           <p className="people-text">People you may know</p>
-          {recommendation.map((r: User) =>
-            <Col>
+          {recommendation.map((r: User, i: number) =>
+            <Col key={i}>
               <UserCard {...r } follow={true}/>
             </Col>)}
         </Col>
@@ -41,7 +41,7 @@ const BaseLayout = () => {
           <Outlet/>
         </Col>
         <Col className="right-panel" md="3">
-          <img className="ad" src="/assets/ad.png" />
+          <img className="ad" src="/assets/ad.png" alt="ad"/>
         </Col>
       </Row>
     </>

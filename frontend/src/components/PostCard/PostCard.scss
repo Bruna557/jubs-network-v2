@@ -10,11 +10,11 @@
 
   .username {
     margin-left: 10px;
-    align-self: end;
+    align-self: flex-end;
   }
 
   .posted-on {
-    text-align: end;
+    text-align: flex-end;
     padding: 15px 30px 0 0;
     color: #848484;
     font-size: 0.85rem;
@@ -26,12 +26,12 @@
 
   .likes {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: baseline;
   }
 
   .like-button {
-    text-align: end;
+    text-align: flex-end;
     margin-left: 20px;
   }
 }

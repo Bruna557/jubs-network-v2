@@ -8,7 +8,7 @@ const UserCard = (user: User) => {
     <div className="user-card">
       <Row>
         <Col className="profile-picture" md="2">
-          <img src={user.picture} />
+          <img src={user.picture} alt="profile"/>
         </Col>
         <Col className="username">
           <p>{user.username}</p>

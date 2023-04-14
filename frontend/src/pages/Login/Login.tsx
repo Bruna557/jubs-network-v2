@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { Button, Row } from "react-bootstrap"
 
-import { login, register } from "../../services/mocks/userService"
+import { login } from "../../services/mocks/userService"
 import "./Login.scss"
 
 const Login = () => {
