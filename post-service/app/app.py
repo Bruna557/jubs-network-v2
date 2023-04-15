@@ -11,16 +11,16 @@ app = Flask(__name__)
 @is_authorized
 def get_posts():
     try:
-        posts = reposistory.get_by_users(request.get_json()["users"],
-                                         request.args.get("page_size"),
-                                         request.args.get("posted_on"),
-                                         request.args.get("scroll") or "down")
-        response = Response(json.dumps(posts))
+        posts, has_more = reposistory.get_by_users(request.get_json()["users"],
+                                                   request.args.get("page_size"),
+                                                   request.args.get("posted_on"),
+                                                   request.args.get("scroll") or "down")
+        response = Response(json.dumps({"posts": posts, "has_more": has_more}))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
 
     except Exception as e:
-        response = Response(json.dumps({ "error": str(e) }))
+        response = Response(json.dumps({"error": str(e)}))
         response.status = 500
 
     response.headers["Content-Type"] = "application/json"
@@ -35,7 +35,7 @@ def create_post(username):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": str(e) }))
+        response = Response(json.dumps({"error": str(e)}))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response
@@ -49,7 +49,7 @@ def edit_post(username, posted_on):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": str(e) }))
+        response = Response(json.dumps({"error": str(e)}))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response
@@ -63,7 +63,7 @@ def like_post(post_user, posted_on):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": str(e) }))
+        response = Response(json.dumps({"error": str(e)}))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response
@@ -77,7 +77,7 @@ def delete_post(username, posted_on):
         return "OK"
 
     except Exception as e:
-        response = Response(json.dumps({ "error": str(e) }))
+        response = Response(json.dumps({"error": str(e)}))
         response.status = 500
         response.headers["Content-Type"] = "application/json"
         return response

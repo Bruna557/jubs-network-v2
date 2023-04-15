@@ -23,9 +23,9 @@ def get_timeline(username):
         authorization_header = request.headers.get("authorization") or ""
         token = authorization_header.replace("Bearer ", "")
 
-        posts = timeline_service.get(username, posted_on, scroll, token)
+        posts, has_more = timeline_service.get(username, posted_on, scroll, token)
 
-        response = Response(json.dumps(posts))
+        response = Response(json.dumps({"posts": posts, "has_more": has_more}))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
 

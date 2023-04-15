@@ -14,9 +14,12 @@ def get_followings(username, page_size, page_number):
             RETURN followed {
                 username: followed.name
             }
-            SKIP $skip
-            LIMIT $limit
         """
+        if int(page_size) > -1:
+            query += """
+                SKIP $skip
+                LIMIT $limit
+            """
         result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
 
         followings = []
@@ -26,6 +29,40 @@ def get_followings(username, page_size, page_number):
 
     except Exception as e:
         logging.error(f"Failed to fetch followings: {e}")
+        raise e
+
+    finally:
+        logging.info("Closing connection to Neo4j")
+        session.close()
+        driver.close()
+
+
+def get_followers(username, page_size, page_number):
+    try:
+        logging.info("Connecting to Neo4j")
+        session, driver = db.neo4j_connection()
+
+        logging.info("Fetching followers")
+        query = """
+            MATCH (:Person {name: $username})<-[:FOLLOWS]-(followed:Person)
+            RETURN followed {
+                username: followed.name
+            }
+        """
+        if int(page_size) > -1:
+            query += """
+                SKIP $skip
+                LIMIT $limit
+            """
+        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
+
+        followers = []
+        for record in result:
+            followers.append(record.values()[0]["username"])
+        return followers
+
+    except Exception as e:
+        logging.error(f"Failed to fetch followers: {e}")
         raise e
 
     finally:
@@ -59,37 +96,6 @@ def get_recommendation(username, page_size, page_number):
 
     except Exception as e:
         logging.error(f"Failed to fetch recommendation: {e}")
-        raise e
-
-    finally:
-        logging.info("Closing connection to Neo4j")
-        session.close()
-        driver.close()
-
-
-def get_followers(username, page_size, page_number):
-    try:
-        logging.info("Connecting to Neo4j")
-        session, driver = db.neo4j_connection()
-
-        logging.info("Fetching followers")
-        query = """
-            MATCH (:Person {name: $username})<-[:FOLLOWS]-(followed:Person)
-            RETURN followed {
-                username: followed.name
-            }
-            SKIP $skip
-            LIMIT $limit
-        """
-        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
-
-        followers = []
-        for record in result:
-            followers.append(record.values()[0]["username"])
-        return followers
-
-    except Exception as e:
-        logging.error(f"Failed to fetch followers: {e}")
         raise e
 
     finally:

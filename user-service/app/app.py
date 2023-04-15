@@ -15,15 +15,15 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@app.route("/users/<username>", methods=["GET"])
+@app.route("/users/<name>", methods=["GET"])
 @is_authorized
-def get_user(username):
+def get_user(name):
     try:
         logging.info("Connecting to MongoDB")
         jubs_db = db.mongo_connection()
 
         logging.info("Fetching user")
-        user = jubs_db.users.find_one({"username": username})
+        user = jubs_db.users.find_one({"username": name})
         response = Response(json_util.dumps(user))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
