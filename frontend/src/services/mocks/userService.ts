@@ -32,10 +32,12 @@ export const fetchUser = async (username: string): Promise<User> => {
 
 export const changeBio = async (username: string, bio: string) => {
     console.log("Changed bio " + bio)
+    return {"bio": bio}
 }
 
 export const changePicture = async (username: string, picture: string) => {
     console.log("Changed picture " + picture)
+    return {"picture": picture}
 }
 
 export const changePassword = async (username: string, password: string) => {

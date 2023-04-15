@@ -17,11 +17,11 @@ const BaseLayout = () => {
   const user = useSelector(getUser)
   const [recommendation, setRecommendation] = useState<User[]>([])
 
-  fetchUser("bruna").then(result => {
+  fetchUser(user.username).then(result => {
     dispatch(setUser(result))
   })
 
-  fetchRecommendation("bruna").then(result => {
+  fetchRecommendation(user.username).then(result => {
     setRecommendation(result)
   })
 

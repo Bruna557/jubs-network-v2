@@ -1,4 +1,4 @@
-import { Post } from "../../types"
+import { TimelineResult } from "../../types"
 
 let posts = [
     {
@@ -108,18 +108,13 @@ let posts = [
     },
 ]
 
-type TimelineResult = {
-    posts: Post[],
-    hasMore: boolean
-}
-
-export const fetchTimeline = async (username: string, pageNumber: number): Promise<TimelineResult> => {
+export const fetchTimeline = async (username: string, postedOn: string): Promise<TimelineResult> => {
     const limit = 5
-    const offset = (pageNumber-1)*limit
-    const hasMore = pageNumber < 3
+    const offset = posts.findIndex(post => post.posted_on === postedOn) + 1
+    const hasMore = postedOn !== "Sat, 29 Apr 2023 18:38:08 GMT"
     return new Promise((resolve, reject) => {
         setTimeout(function() {
-            resolve({"posts": posts.slice(offset, offset+limit), "hasMore": hasMore})
-        }, 2000);
+            resolve({"posts": posts.slice(offset, offset+limit), "has_more": hasMore})
+        }, 2000)
     })
 }

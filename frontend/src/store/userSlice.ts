@@ -31,12 +31,21 @@ export const userSlice = createSlice({
     reducers: {
         setUser: (state:UserState, action: PayloadAction<User>) => {
             state.user = action.payload
+        },
+        setUsername: (state:UserState, action: PayloadAction<string>) => {
+            state.user.username = action.payload
+        },
+        setBio: (state:UserState, action: PayloadAction<string>) => {
+            state.user.bio = action.payload
+        },
+        setPicture: (state:UserState, action: PayloadAction<string>) => {
+            state.user.picture = action.payload
         }
     },
 })
 
 // Actions
-export const { setUser } = userSlice.actions
+export const { setUser, setUsername, setBio, setPicture } = userSlice.actions
 
 // Selectors
 export const getUser = (state: RootState) => state.user.user

@@ -1,15 +1,18 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import { Navbar, Container, Nav, NavDropdown, Form, Button, Modal } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
 import { User } from "../../types"
+import { setBio, setPicture } from "../../store/userSlice"
 import { changeBio, changePicture, changePassword } from "../../services/mocks/userService"
 import "./Navigation.scss"
 
 const Navigation = (user: User) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [showModal, setShowModal] = useState(false)
   const [modalType, setModalType] = useState("")
   const [modalValue, setModalValue] = useState("")
@@ -27,8 +30,14 @@ const Navigation = (user: User) => {
   const handleSubmit = () => {
     if (modalType === "bio") {
       changeBio(user.username, modalValue)
+        .then((response) => {
+          dispatch(setBio(response.bio))
+        })
     } else if (modalType === "picture") {
       changePicture(user.username, modalValue)
+        .then((response) => {
+          dispatch(setPicture(response.picture))
+        })
     } else if (modalType === "password") {
       changePassword(user.username, modalValue)
     }

@@ -1,18 +1,22 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import { Button, Row } from "react-bootstrap"
 
 import { login } from "../../services/mocks/userService"
+import { setUsername } from "../../store/userSlice"
 import "./Login.scss"
 
 const Login = () => {
   const navigate = useNavigate()
-  const [username, setUsername] = useState("")
+  const dispatch = useDispatch()
+  const [username, _setUsername] = useState("")
   const [password, setPassword] = useState("")
 
   const handleSignIn = () => {
     login(username, password).then(success => {
       if(success) {
+        dispatch(setUsername(username))
         navigate("/")
       }
     })
@@ -24,7 +28,7 @@ const Login = () => {
         <Row><h3>Sign in</h3></Row>
         <Row className="username-label">Username:</Row>
         <Row>
-          <input value={username} placeholder="username" onChange={(e) => setUsername(e.target.value)} />
+          <input value={username} placeholder="username" onChange={(e) => _setUsername(e.target.value)} />
         </Row>
         <Row className="password-label">Password:</Row>
         <Row>

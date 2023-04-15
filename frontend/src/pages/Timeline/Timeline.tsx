@@ -14,7 +14,6 @@ import "./Timeline.scss"
 const Timeline = () => {
   const [posts, setPosts] = useState<Post[]>([])
   const [hasMore, setHasMore] = useState(true)
-  const [pageNumber, setPageNumber] = useState(1)
   const user = useSelector(getUser)
 
   useEffect(() => {
@@ -22,10 +21,9 @@ const Timeline = () => {
   }, [])
 
   const nextPage = () => {
-    fetchTimeline(user.username, pageNumber).then(result => {
+    fetchTimeline(user.username, posts.slice(-1)[0].posted_on).then(result => {
       setPosts([...posts, ...result.posts])
-      setHasMore(result.hasMore)
-      setPageNumber(pageNumber + 1)
+      setHasMore(result.has_more)
     })
   }
 
