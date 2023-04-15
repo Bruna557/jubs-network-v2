@@ -15,15 +15,15 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@app.route("/users/<name>", methods=["GET"])
+@app.route("/users/<_username>", methods=["GET"])
 @is_authorized
-def get_user(name):
+def get_user(_username):
     try:
         logging.info("Connecting to MongoDB")
         jubs_db = db.mongo_connection()
 
         logging.info("Fetching user")
-        user = jubs_db.users.find_one({"username": name})
+        user = jubs_db.users.find_one({"username": _username})
         response = Response(json_util.dumps(user))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
@@ -39,7 +39,7 @@ def get_user(name):
 
 @app.route("/users", methods=["GET"])
 @is_authorized
-def search_user():
+def search_users():
     try:
         logging.info("Connecting to MongoDB")
         jubs_db = db.mongo_connection()
@@ -189,7 +189,7 @@ def logout(username):
 
 
 @app.route("/auth/token/verify", methods=["POST"])
-def verify():
+def verify_token():
     try:
         token = request.get_json()["token"]
         decoded = jwt.decode(token, APP_SETTINGS["SECRET_KEY"], algorithms=["HS256"])
