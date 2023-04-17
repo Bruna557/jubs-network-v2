@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Flask, json, request, Response
+from flask_cors import CORS
 import logging
 
 from app import database as redis
@@ -9,6 +10,7 @@ from app.services import TimelineService
 
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 repository = RedisRepository(redis)
 timeline_service = TimelineService(repository)
 logging.basicConfig(level=logging.INFO)

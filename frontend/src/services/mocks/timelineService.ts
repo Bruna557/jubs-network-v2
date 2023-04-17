@@ -111,10 +111,10 @@ let posts = [
 export const fetchTimeline = async (username: string, postedOn: string): Promise<TimelineResult> => {
     const limit = 5
     const offset = posts.findIndex(post => post.posted_on === postedOn) + 1
-    const hasMore = postedOn !== "Sat, 29 Apr 2023 18:38:08 GMT"
+    const hasMore = offset < posts.length - limit
     return new Promise((resolve, reject) => {
         setTimeout(function() {
-            resolve({"posts": posts.slice(offset, offset+limit), "has_more": hasMore})
+            resolve({"posts": posts.slice(offset, offset + limit), "has_more": hasMore})
         }, 2000)
     })
 }

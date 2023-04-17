@@ -14,6 +14,9 @@ export const fetchRecommendation = async (username: string): Promise<User[]> => 
     .then(data => {
         return data
     })
+    .catch ((err) => {
+        console.log("Error: unable to fetch recommendation", err)
+    })
 }
 
 export const follow = async (username: string, followed:string) => {
@@ -25,5 +28,8 @@ export const follow = async (username: string, followed:string) => {
     .then(response => response.json())
     .then(data => {
         return data
+    })
+    .catch ((err) => {
+        console.log("Error: unable to follow", err)
     })
 }

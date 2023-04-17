@@ -1,10 +1,12 @@
 from flask import Flask, json, request, Response
+from flask_cors import CORS
 
 from app import reposistory
 from app.auth import is_authorized
 
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 
 
 @app.route("/posts", methods=["GET"])
@@ -32,13 +34,15 @@ def get_posts():
 def create_post(username):
     try:
         reposistory.create(username, request.get_json()["body"])
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         response = Response(json.dumps({"error": str(e)}))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 @app.route("/posts/<username>/<posted_on>", methods=["PUT"])
@@ -46,13 +50,15 @@ def create_post(username):
 def edit_post(username, posted_on):
     try:
         reposistory.edit(username, posted_on, request.get_json()["body"])
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         response = Response(json.dumps({"error": str(e)}))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 @app.route("/likes/<post_user>/<posted_on>", methods=["PUT"])
@@ -60,13 +66,15 @@ def edit_post(username, posted_on):
 def like_post(post_user, posted_on):
     try:
         reposistory.like(post_user, posted_on)
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         response = Response(json.dumps({"error": str(e)}))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 @app.route("/posts/<username>/<posted_on>", methods=["DELETE"])
@@ -74,13 +82,15 @@ def like_post(post_user, posted_on):
 def delete_post(username, posted_on):
     try:
         reposistory.delete(username, posted_on)
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         response = Response(json.dumps({"error": str(e)}))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 if __name__ == "__main__":

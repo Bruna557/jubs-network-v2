@@ -59,11 +59,14 @@ class TimelineService:
     def get(self, username, posted_on, scroll, token):
         try:
             logging.info("Fetching posts")
-            posts = json.loads(self.repository.get(username))
+            cached = json.loads(self.repository.get(username))
 
-            if posts and ((scroll == "down" and _get_post_timestamp(posts[-1:][0]) < int(posted_on)) or
-                          (scroll == "up" and _get_post_timestamp(posts[0]) > int(posted_on))):
+            if "posts" in cached and cached["posts"] and \
+                ((scroll == "down" and _get_post_timestamp(cached["posts"][-1:][0]) < int(posted_on)) or
+                 (scroll == "up" and _get_post_timestamp(cached["posts"][0]) > int(posted_on))):
                 logging.info("Cache hit - getting posts from cache")
+                posts = cached["posts"]
+                has_more = cached["has_more"]
             else:
                 logging.info("Cache miss - getting posts from Post Service")
                 users = _get_followings(username, token)

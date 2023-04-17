@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Button, Row, Col, Card } from "react-bootstrap"
 
 import { User } from "../../types"
-import { post } from "../../services/mocks/postService"
+import { post } from "../../services/postService"
 import "./WritePost.scss"
 
 const WritePost = (user: User) => {

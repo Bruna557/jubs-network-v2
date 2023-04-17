@@ -1,4 +1,5 @@
 from flask import Flask, json, request, Response
+from flask_cors import CORS
 import logging
 
 from app import repository
@@ -6,6 +7,7 @@ from app.auth import is_authorized
 
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 logging.basicConfig(level=logging.INFO)
 
 
@@ -65,13 +67,15 @@ def get_recommendation(username):
 def follow(username, followed):
     try:
         repository.follow(username, followed)
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         response = Response(json.dumps({ "error": str(e) }))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 @app.route("/follow/<username>/<followed>", methods=["DELETE"])
@@ -79,13 +83,15 @@ def follow(username, followed):
 def unfollow(username, followed):
     try:
         repository.unfollow(username, followed)
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         response = Response(json.dumps({ "error": str(e) }))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 if __name__ == "__main__":

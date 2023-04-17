@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { Row, Col } from "react-bootstrap"
 
 import Navigation from "../components/Navigation/Navigations"
 import UserCard from "../components/UserCard/UserCard"
-import { fetchUser } from "../services/mocks/userService"
-import { fetchRecommendation } from "../services/mocks/followService"
+import { fetchUser } from "../services/userService"
+import { fetchRecommendation } from "../services/followService"
 import { User } from "../types"
 import { getUser, setUser } from "../store/userSlice"
 
@@ -17,13 +17,15 @@ const BaseLayout = () => {
   const user = useSelector(getUser)
   const [recommendation, setRecommendation] = useState<User[]>([])
 
-  fetchUser(user.username).then(result => {
-    dispatch(setUser(result))
-  })
+  useEffect(() => {
+    fetchUser(user.username).then(result => {
+      dispatch(setUser(result))
+    })
 
-  fetchRecommendation(user.username).then(result => {
-    setRecommendation(result)
-  })
+    fetchRecommendation(user.username).then(result => {
+      setRecommendation(result)
+    })
+  }, [])
 
   return (
     <>
@@ -32,7 +34,7 @@ const BaseLayout = () => {
         <Col className="left-panel" md="3">
           <UserCard {...user} follow={false}/>
           <p className="people-text">People you may know</p>
-          {recommendation.map((r: User, i: number) =>
+          {recommendation?.map((r: User, i: number) =>
             <Col key={i}>
               <UserCard {...r } follow={true}/>
             </Col>)}

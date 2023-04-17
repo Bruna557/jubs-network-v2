@@ -1,5 +1,6 @@
 from bson import json_util
 from flask import Flask, request, Response
+from flask_cors import CORS
 import jwt
 import logging
 
@@ -11,6 +12,7 @@ from app.utils import get_encoded_jwt, hash_password
 
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 logging.basicConfig(level=logging.INFO)
 
 
@@ -127,14 +129,16 @@ def delete_user(username):
         logging.info("Deleting user")
         jubs_db.users.delete_one({"username": username})
         publisher.publish_user_deleted_event(username)
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         logging.error(f"Failed to delete user: {e}")
         response = Response(json_util.dumps({"error": str(e)}))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 @app.route("/auth/login", methods=["POST"])
@@ -166,7 +170,6 @@ def login():
         response = Response(json_util.dumps({"error": str(e)}))
         response.status = 500
 
-    response.headers["Content-Type"] = "application/json"
     return response
 
 
@@ -183,14 +186,16 @@ def logout(username):
         logging.info("Adding token to blacklist")
         jubs_db.blacklist.insert_one({"username": username, "token": token})
 
-        return "OK"
+        response = Response("OK")
+        response.status_code = 200
 
     except Exception as e:
         logging.error(f"Failed to log out: {e}")
         response = Response(json_util.dumps({"error": str(e)}))
         response.status = 500
-        response.headers["Content-Type"] = "application/json"
-        return response
+
+    response.headers["Content-Type"] = "application/json"
+    return response
 
 
 @app.route("/auth/token/verify", methods=["POST"])

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { Row, Col, Button } from "react-bootstrap"
 
 import { User } from "../../types"
-import { follow } from "../../services/mocks/followService"
+import { follow } from "../../services/followService"
 import { getUser } from "../../store/userSlice"
 
 import "./UserCard.scss"

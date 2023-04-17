@@ -12,4 +12,4 @@ def get_encoded_jwt(username):
 
 def hash_password(password):
     hash_object = hashlib.sha1(bytes(password, "utf-8"))
-    hashed_password = hash_object.hexdigest()
+    return hash_object.hexdigest()

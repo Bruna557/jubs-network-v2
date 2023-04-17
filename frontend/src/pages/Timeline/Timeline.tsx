@@ -8,7 +8,7 @@ import { Post } from "../../types"
 import PostCard from "../../components/PostCard/PostCard"
 import WritePost from "../../components/WritePost/WritePost"
 import { getUser } from "../../store/userSlice"
-import { fetchTimeline } from "../../services/mocks/timelineService"
+import { fetchTimeline } from "../../services/timelineService"
 import "./Timeline.scss"
 
 const Timeline = () => {
@@ -21,7 +21,13 @@ const Timeline = () => {
   }, [])
 
   const nextPage = () => {
-    fetchTimeline(user.username, posts.slice(-1)[0].posted_on).then(result => {
+    let postedOn
+    if (posts.length === 0) {
+      postedOn = (new Date()).toString()
+    } else {
+      postedOn = posts.slice(-1)[0].posted_on
+    }
+    fetchTimeline(user.username, postedOn).then(result => {
       setPosts([...posts, ...result.posts])
       setHasMore(result.has_more)
     })

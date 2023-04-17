@@ -14,6 +14,9 @@ export const post = async (username: string, body: string) => {
     .then(data => {
         return data
     })
+    .catch ((err) => {
+        console.log("Error: unable to create post", err)
+    })
 }
 
 export const like = async (username: string, postedOn: string) => {
@@ -25,5 +28,8 @@ export const like = async (username: string, postedOn: string) => {
     .then(response => response.json())
     .then(data => {
         return data
+    })
+    .catch ((err) => {
+        console.log("Error: unable to like post", err)
     })
 }

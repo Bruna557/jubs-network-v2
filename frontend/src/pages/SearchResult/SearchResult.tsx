@@ -4,7 +4,7 @@ import { Col } from "react-bootstrap"
 
 import { User } from "../../types"
 import UserCard from "../../components/UserCard/UserCard"
-import { search } from "../../services/mocks/userService"
+import { search } from "../../services/userService"
 import "./SearchResult.scss"
 
 const SearchResult = () => {
@@ -15,7 +15,7 @@ const SearchResult = () => {
     search(searchParams.get("q") || "").then(result => {
       setUsers(result)
     })
-  })
+  }, [])
 
   return (
     <>
