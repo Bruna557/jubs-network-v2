@@ -9,17 +9,19 @@ import "./SearchResult.scss"
 
 const SearchResult = () => {
   const [users, setUsers] = useState<User[]>([])
+  const [searchText, setSearchText] = useState("")
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
+    setSearchText(searchParams.get("q") || "")
     search(searchParams.get("q") || "").then(result => {
       setUsers(result)
     })
-  }, [])
+  }, [searchParams.get("q")])
 
   return (
     <>
-      <h4>Search result</h4>
+      <h4>Search result: {searchText}</h4>
       <div className="results">
         {users.map((r: User, i:number) =>
           <Col key={i}>
