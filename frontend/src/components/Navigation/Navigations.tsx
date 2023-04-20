@@ -7,7 +7,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
 import { User } from "../../types"
 import { setBio, setPicture } from "../../store/userSlice"
-import { changeBio, changePicture, changePassword } from "../../services/userService"
+import { changeBio, changePicture, changePassword } from "../../services/mocks/userService"
 import "./Navigation.scss"
 
 const Navigation = (user: User) => {

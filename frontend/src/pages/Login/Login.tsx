@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { Button, Row } from "react-bootstrap"
 
-import { login } from "../../services/userService"
+import { login } from "../../services/mocks/userService"
 import { setUsername } from "../../store/userSlice"
 import "./Login.scss"
 

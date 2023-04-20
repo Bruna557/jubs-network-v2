@@ -2,15 +2,26 @@
   width: 40vw;
   margin: 10px;
 
+  @media screen and (max-width: 770px) {
+    width: 90vw;
+  }
+
   img {
     border-radius: 50%;
     width: 60px;
-    margin: 10px 28px 0;
+    margin: 10px 0 0 28px;
   }
 
   .username {
-    margin-left: 10px;
     align-self: flex-end;
+
+    @media screen and (max-width: 1450px) {
+      padding-left: 40px;
+    }
+
+    @media screen and (max-width: 790px) {
+      padding-left: 50px;
+    }
   }
 
   .posted-on {

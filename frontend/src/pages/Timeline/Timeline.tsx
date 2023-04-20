@@ -8,7 +8,7 @@ import { Post } from "../../types"
 import PostCard from "../../components/PostCard/PostCard"
 import WritePost from "../../components/WritePost/WritePost"
 import { getUser } from "../../store/userSlice"
-import { fetchTimeline } from "../../services/timelineService"
+import { fetchTimeline } from "../../services/mocks/timelineService"
 import "./Timeline.scss"
 
 const Timeline = () => {

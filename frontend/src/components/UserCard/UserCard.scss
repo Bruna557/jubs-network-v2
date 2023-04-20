@@ -13,6 +13,10 @@
   .username {
     align-self: end;
     margin-left: 25px;
+
+    @media screen and (max-width: 1070px) {
+      margin-left: 50px;
+    }
   }
 
   .bio {
