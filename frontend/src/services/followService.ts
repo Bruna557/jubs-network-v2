@@ -16,6 +16,9 @@ export const fetchRecommendation = async (username: string): Promise<User[]> => 
     })
     .catch ((err) => {
         console.log("Error: unable to fetch recommendation", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }
 
@@ -31,5 +34,8 @@ export const follow = async (username: string, followed:string) => {
     })
     .catch ((err) => {
         console.log("Error: unable to follow", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }

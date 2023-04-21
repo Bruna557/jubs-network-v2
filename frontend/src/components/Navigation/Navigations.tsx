@@ -33,13 +33,22 @@ const Navigation = (user: User) => {
         .then((response) => {
           dispatch(setBio(response.bio))
         })
+        .catch(() => {
+          navigate("/login")
+        })
     } else if (modalType === "picture") {
       changePicture(user.username, modalValue)
         .then((response) => {
           dispatch(setPicture(response.picture))
         })
+        .catch(() => {
+          navigate("/login")
+        })
     } else if (modalType === "password") {
       changePassword(user.username, modalValue)
+        .catch(() => {
+          navigate("/login")
+        })
     }
     setShowModal(false)
     setModalValue("")

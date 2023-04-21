@@ -16,6 +16,9 @@ export const post = async (username: string, body: string) => {
     })
     .catch ((err) => {
         console.log("Error: unable to create post", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }
 
@@ -31,5 +34,8 @@ export const like = async (username: string, postedOn: string) => {
     })
     .catch ((err) => {
         console.log("Error: unable to like post", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }

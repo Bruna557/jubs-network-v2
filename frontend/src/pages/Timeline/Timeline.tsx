@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -12,6 +13,7 @@ import { fetchTimeline } from "../../services/mocks/timelineService"
 import "./Timeline.scss"
 
 const Timeline = () => {
+  const navigate = useNavigate()
   const [posts, setPosts] = useState<Post[]>([])
   const [hasMore, setHasMore] = useState(true)
   const user = useSelector(getUser)
@@ -22,10 +24,14 @@ const Timeline = () => {
 
   const nextPage = () => {
     let postedOn = posts.length === 0 ? (new Date()).toString() : posts.slice(-1)[0].posted_on
-    fetchTimeline(user.username, postedOn).then(result => {
-      setPosts([...posts, ...result.posts])
-      setHasMore(result.has_more)
-    })
+    fetchTimeline(user.username, postedOn)
+      .then(result => {
+        setPosts([...posts, ...result.posts])
+        setHasMore(result.has_more)
+      })
+      .catch(() => {
+        navigate("/login")
+      })
   }
 
   const postHandler = (p: Post) => {

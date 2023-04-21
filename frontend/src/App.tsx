@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route , Navigate} from "react-router-dom"
 
 import BaseLayout from "./layouts/BaseLayout"
 import Timeline from "./pages/Timeline/Timeline"
@@ -14,9 +14,10 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<BaseLayout />}>
-          <Route index element={<Timeline />} />
+          <Route path="home" element={<Timeline />} />
           <Route path="search" element={<SearchResult />} />
         </Route>
+        <Route path="/" element={<Navigate to="/login"/>} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Routes>

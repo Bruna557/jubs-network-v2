@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { Row, Col, Button } from "react-bootstrap"
 
 import { User } from "../../types"
@@ -8,7 +9,15 @@ import { getUser } from "../../store/userSlice"
 import "./UserCard.scss"
 
 const UserCard = (user: User) => {
+  const navigate = useNavigate()
   const u = useSelector(getUser)
+
+  const handleFollow = (username: string, followed: string) => {
+    follow(username, followed)
+      .catch(() => {
+        navigate("/login")
+      })
+  }
 
   return (
     <div className="user-card">
@@ -21,7 +30,7 @@ const UserCard = (user: User) => {
         </Col>
         {user.follow &&
           <Col>
-            <Button onClick={() => follow(u.username, user.username)}>Follow</Button>
+            <Button onClick={() => handleFollow(u.username, user.username)}>Follow</Button>
           </Col>}
       </Row>
       <Row className="bio">

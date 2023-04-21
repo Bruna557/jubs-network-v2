@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Button, Row, Col, Card } from "react-bootstrap"
 
 import { User, Post } from "../../types"
@@ -12,7 +13,8 @@ interface WritePostProps {
 
 const WritePost = ({user, postHandler}: WritePostProps
   ) => {
-  const [postBody, setPostBody] = useState("")
+    const navigate = useNavigate()
+    const [postBody, setPostBody] = useState("")
 
   const handleSubmit = () => {
     post(user.username, postBody)
@@ -20,6 +22,9 @@ const WritePost = ({user, postHandler}: WritePostProps
         if (result) {
           postHandler(result)
         }
+      })
+      .catch(() => {
+        navigate("/login")
       })
     setPostBody("")
   }

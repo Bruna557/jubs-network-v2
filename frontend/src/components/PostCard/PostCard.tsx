@@ -1,4 +1,5 @@
 import { useState} from "react"
+import { useNavigate } from "react-router-dom"
 import { Button, Row, Col, Card } from "react-bootstrap"
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,6 +9,7 @@ import { like } from "../../services/mocks/postService"
 import "./PostCard.scss"
 
 const PostCard = (p: Post) => {
+  const navigate = useNavigate()
   const [post, setPost] = useState(p)
 
   const handleLike = () => {
@@ -16,6 +18,9 @@ const PostCard = (p: Post) => {
         if (response) {
           setPost(post => ({...post, likes: post.likes + 1}))
         }
+      })
+      .catch(() => {
+        navigate("/login")
       })
   }
 

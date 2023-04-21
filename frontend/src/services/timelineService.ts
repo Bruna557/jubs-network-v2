@@ -19,5 +19,8 @@ export const fetchTimeline = async (username: string, postedOn: string): Promise
     })
     .catch ((err) => {
         console.log("Error: unable to fetch posts", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import { Col } from "react-bootstrap"
 
 import { User } from "../../types"
@@ -8,15 +8,20 @@ import { search } from "../../services/mocks/userService"
 import "./SearchResult.scss"
 
 const SearchResult = () => {
+  const navigate = useNavigate()
   const [users, setUsers] = useState<User[]>([])
   const [searchText, setSearchText] = useState("")
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     setSearchText(searchParams.get("q") || "")
-    search(searchParams.get("q") || "").then(result => {
-      setUsers(result)
-    })
+    search(searchParams.get("q") || "")
+      .then(result => {
+        setUsers(result)
+      })
+      .catch(() => {
+        navigate("/login")
+      })
   }, [searchParams.get("q")])
 
   return (

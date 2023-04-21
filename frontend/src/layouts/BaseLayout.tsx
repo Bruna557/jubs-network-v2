@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { Row, Col } from "react-bootstrap"
 
@@ -13,6 +13,7 @@ import { getUser, setUser } from "../store/userSlice"
 import "./BaseLayout.scss"
 
 const BaseLayout = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector(getUser)
   const [recommendation, setRecommendation] = useState<User[]>([])
@@ -20,13 +21,21 @@ const BaseLayout = () => {
   const isMobile = window.innerWidth <= 770
 
   useEffect(() => {
-    fetchUser(user.username).then(result => {
-      dispatch(setUser(result))
-    })
+    fetchUser(user.username)
+      .then(result => {
+        dispatch(setUser(result))
+      })
+      .catch(() => {
+        navigate("/login")
+      })
 
-    fetchRecommendation(user.username).then(result => {
-      setRecommendation(result)
-    })
+    fetchRecommendation(user.username)
+      .then(result => {
+        setRecommendation(result)
+      })
+      .catch(() => {
+        navigate("/login")
+      })
   }, [])
 
   return (

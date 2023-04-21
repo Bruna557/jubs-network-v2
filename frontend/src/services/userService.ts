@@ -16,6 +16,9 @@ export const fetchUser = async (username: string): Promise<User> => {
     })
     .catch ((err) => {
         console.log("Error: unable to fetch user", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }
 
@@ -32,6 +35,9 @@ export const changeBio = async (username: string, bio: string) => {
     })
     .catch ((err) => {
         console.log("Error: unable to change bio", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }
 
@@ -48,6 +54,9 @@ export const changePicture = async (username: string, picture: string) => {
     })
     .catch ((err) => {
         console.log("Error: unable to change picture", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }
 
@@ -64,6 +73,9 @@ export const changePassword = async (username: string, password: string) => {
     })
     .catch ((err) => {
         console.log("Error: unable to change password", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }
 
@@ -117,5 +129,8 @@ export const search = async (username: string): Promise<User[]> => {
     })
     .catch ((err) => {
         console.log("Error: unable to search", err)
+        if (err.response.status == 401) {
+            throw new Error("Unauthorized");
+        }
     })
 }

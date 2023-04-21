@@ -17,7 +17,7 @@ const Login = () => {
     login(username, password).then(success => {
       if(success) {
         dispatch(setUsername(username))
-        navigate("/")
+        navigate("/home")
       }
     })
   }
@@ -32,7 +32,7 @@ const Login = () => {
         </Row>
         <Row className="password-label">Password:</Row>
         <Row>
-          <input value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+          <input value={password} type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
         </Row>
         <Row className="buttons">
           <Button variant="primary" onClick={() => handleSignIn()}>Sign In</Button>

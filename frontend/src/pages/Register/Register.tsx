@@ -19,7 +19,7 @@ const Register = () => {
     register(username, password, bio, picture).then(success => {
       if(success) {
         dispatch(setUsername(username))
-        navigate("/")
+        navigate("/home")
       }
     })
   }
@@ -34,7 +34,7 @@ const Register = () => {
         </Row>
         <Row className="password-label">Password:</Row>
         <Row>
-          <input value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+          <input value={password} type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
         </Row>
         <Row className="picture-label">Picture:</Row>
         <Row>
