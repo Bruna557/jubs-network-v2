@@ -1,3 +1,4 @@
+import { useState} from "react"
 import { Button, Row, Col, Card } from "react-bootstrap"
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -6,7 +7,18 @@ import { Post } from "../../types"
 import { like } from "../../services/mocks/postService"
 import "./PostCard.scss"
 
-const PostCard = (post: Post) => {
+const PostCard = (p: Post) => {
+  const [post, setPost] = useState(p)
+
+  const handleLike = () => {
+    like(post.username, post.posted_on)
+      .then(response => {
+        if (response) {
+          setPost(post => ({...post, likes: post.likes + 1}))
+        }
+      })
+  }
+
   return (
     <>
       <Card>
@@ -22,7 +34,7 @@ const PostCard = (post: Post) => {
           <Row>
             <Col lg="12" className="likes">
               {post.likes}
-              <Button className="like-button" onClick={() => like(post.username, post.posted_on)}>
+              <Button className="like-button" onClick={handleLike}>
                 <FontAwesomeIcon icon={faThumbsUp} />
               </Button>
             </Col>

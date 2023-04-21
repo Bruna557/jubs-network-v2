@@ -21,21 +21,20 @@ const Timeline = () => {
   }, [])
 
   const nextPage = () => {
-    let postedOn
-    if (posts.length === 0) {
-      postedOn = (new Date()).toString()
-    } else {
-      postedOn = posts.slice(-1)[0].posted_on
-    }
+    let postedOn = posts.length === 0 ? (new Date()).toString() : posts.slice(-1)[0].posted_on
     fetchTimeline(user.username, postedOn).then(result => {
       setPosts([...posts, ...result.posts])
       setHasMore(result.has_more)
     })
   }
 
+  const postHandler = (p: Post) => {
+    setPosts([p, ...posts])
+  }
+
   return (
     <div className="timeline">
-      <WritePost {...user}/>
+      <WritePost user={user} postHandler={postHandler}/>
       <InfiniteScroll
         dataLength={posts.length}
         next={nextPage}
