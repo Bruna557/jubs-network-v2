@@ -52,7 +52,7 @@ def get_by_username(username):
         driver.close()
 
 
-def search(username):
+def search(username, q, page_size, page_number):
     try:
         logging.info("Connecting to Neo4j")
         session, driver = db.neo4j_connection()
@@ -60,14 +60,17 @@ def search(username):
         logging.info("Searching users")
         query = """
             MATCH (user:Person)
-            WHERE user.username STARTS WITH $username
+            WHERE user.username STARTS WITH $q
             RETURN user {
                 username: user.username,
                 bio: user.bio,
                 picture: user.picture
+                is_followed: EXISTS( (:Person {username: $username})-[:FOLLOWS]->(:Person {username: user.username}) )
             }
+            SKIP $skip
+            LIMIT $limit
         """
-        result = session.run(query, username=username)
+        result = session.run(query, q=q, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
         return [record.data() for record in result]
 
     except Exception as e:
@@ -161,7 +164,8 @@ def get_followings(username, page_size, page_number):
             RETURN followed {
                 username: followed.username,
                 bio: followed.bio,
-                picture: followed.picture
+                picture: followed.picture,
+                is_followed: true
             }
         """
         if int(page_size) > -1:
@@ -194,7 +198,8 @@ def get_followers(username, page_size, page_number):
             RETURN follower {
                 username: follower.username,
                 bio: follower.bio,
-                picture: follower.picture
+                picture: follower.picture,
+                is_followed: EXISTS( (:Person {username: $username})-[:FOLLOWS]->(:Person {username: follower.username}) )
             }
         """
         if int(page_size) > -1:
@@ -205,34 +210,6 @@ def get_followers(username, page_size, page_number):
         result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
 
         return result.data()
-
-    except Exception as e:
-        logging.error(f"Failed to fetch followers: {e}")
-        raise e
-
-    finally:
-        logging.info("Closing connection to Neo4j")
-        session.close()
-        driver.close()
-
-
-def is_follower(username, followed):
-    try:
-        logging.info("Connecting to Neo4j")
-        session, driver = db.neo4j_connection()
-
-        logging.info("Fetching followers")
-        query = """
-            MATCH (:Person {username: $username})-[:FOLLOWS]->(f:Person {username: $followed})
-            RETURN f
-        """
-
-        result = session.run(query, username=username, followed=followed)
-
-        if result.data():
-            return True
-        else:
-            return False
 
     except Exception as e:
         logging.error(f"Failed to fetch followers: {e}")

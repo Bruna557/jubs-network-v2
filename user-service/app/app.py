@@ -4,7 +4,6 @@ import logging
 
 from app import repository
 from app import publisher
-from app.auth import is_authorized
 
 
 app = Flask(__name__)
@@ -30,7 +29,6 @@ def create_user():
 
 
 @app.route("/users/<username>", methods=["GET"])
-@is_authorized
 def get_user(username):
     try:
         user = repository.get_by_username(username)
@@ -46,11 +44,10 @@ def get_user(username):
     return response
 
 
-@app.route("/users", methods=["GET"])
-@is_authorized
-def search_users():
+@app.route("/users/<username>/search", methods=["GET"])
+def search_users(username):
     try:
-        users = repository.search(request.args.get("username"))
+        users = repository.search(username, request.args.get("q"), request.args.get("page_size"), request.args.get("page_number"))
         response = Response(json.dumps(users))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
@@ -64,7 +61,6 @@ def search_users():
 
 
 @app.route("/users/<username>", methods=["PUT"])
-@is_authorized
 def edit_user(username):
     try:
         data = request.get_json()
@@ -89,7 +85,6 @@ def edit_user(username):
 
 
 @app.route("/followings/<username>", methods=["GET"])
-@is_authorized
 def get_followings(username):
     try:
         followings = repository.get_followings(username, request.args.get("page_size"), request.args.get("page_number"))
@@ -106,7 +101,6 @@ def get_followings(username):
 
 
 @app.route("/followers/<username>", methods=["GET"])
-@is_authorized
 def get_followers(username):
     try:
         followers = repository.get_followers(username, request.args.get("page_size"), request.args.get("page_number"))
@@ -122,25 +116,7 @@ def get_followers(username):
     return response
 
 
-@app.route("/followers/<username>/<followed>", methods=["GET"])
-@is_authorized
-def is_follower(username, followed):
-    try:
-        is_followed = repository.is_follower(username, followed)
-        response = Response(json.dumps({"is_follower": is_followed}))
-        response.status = 200
-        response.headers["Cache-Control"] = "public, max-age=60"
-
-    except Exception as e:
-        response = Response(json.dumps({ "error": str(e) }))
-        response.status = 500
-
-    response.headers["Content-Type"] = "application/json"
-    return response
-
-
 @app.route("/followers/recommendation/<username>", methods=["GET"])
-@is_authorized
 def get_recommendation(username):
     try:
         followers = repository.get_recommendation(username, request.args.get("page_size"), request.args.get("page_number"))
@@ -157,7 +133,6 @@ def get_recommendation(username):
 
 
 @app.route("/follow/<username>/<followed>", methods=["POST"])
-@is_authorized
 def follow(username, followed):
     try:
         repository.follow(username, followed)
@@ -173,7 +148,6 @@ def follow(username, followed):
 
 
 @app.route("/follow/<username>/<followed>", methods=["DELETE"])
-@is_authorized
 def unfollow(username, followed):
     try:
         repository.unfollow(username, followed)
@@ -189,7 +163,6 @@ def unfollow(username, followed):
 
 
 @app.route("/users/<username>", methods=["DELETE"])
-@is_authorized
 def delete_user(username):
     try:
         repository.delete(username)
@@ -209,7 +182,6 @@ def delete_user(username):
 def login():
     try:
         data = request.get_json()
-
         token = repository.login(data["username"], data["password"])
 
         if not token:

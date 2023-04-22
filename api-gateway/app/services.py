@@ -1,35 +1,41 @@
 from flask import json
 import logging
 
-from app.utils import get_post_timestamp, get_followings, get_posts, decode_token
+from app import utils
 
 
 class TimelineService:
     def __init__(self, repository):
         self.repository = repository
 
-    def get(self, username, posted_on, scroll, token):
-        try:
-            logging.info("Fetching posts")
-            cached = json.loads(self.repository.get("timeline->" + username))
+    def get(self, username, posted_on, scroll):
+        logging.info("Fetching posts")
+        cached = self.repository.get("timeline->" + username)
+        cached_json = json.loads(cached)
 
-            if "posts" in cached and cached["posts"] and \
-                ((scroll == "down" and get_post_timestamp(cached["posts"][-1:][0]) < int(posted_on)) or
-                 (scroll == "up" and get_post_timestamp(cached["posts"][0]) > int(posted_on))):
-                logging.info("Cache hit - getting posts from cache")
-                posts = cached["posts"]
-                has_more = cached["has_more"]
-            else:
-                logging.info("Cache miss - getting posts from Post Service")
-                users = get_followings(username, token)
-                posts, has_more = get_posts("timeline->" + username, users, posted_on, scroll, token)
-                self.repository.set(username, json.dumps({"posts": posts, "has_more": has_more}))
+        if "posts" in cached_json and cached_json["posts"] and \
+            ((scroll == "down" and utils.get_post_timestamp(cached_json["posts"][-1:][0]) < int(posted_on)) or
+                (scroll == "up" and utils.get_post_timestamp(cached_json["posts"][0]) > int(posted_on))):
+            logging.info("Cache hit - getting posts from cache")
+            return cached, 200
+        else:
+            logging.info("Cache miss - getting posts from Post Service")
+            res, status_code = utils.get_followings(username, -1, 1)
 
-            return posts, has_more
+            if status_code != 200:
+                return "Failed to fetch followings", 500
 
-        except Exception as e:
-            logging.error(f"Failed to fetch posts: {e}")
-            raise e
+            users = [u["followed"]["username"] for u in res]
+            users.append(username)
+
+            res, status_code = utils.get_posts(users, posted_on, scroll)
+
+            if status_code != 200:
+                return "Failed to fetch posts", 500
+
+            self.repository.set("timeline->" + username, res)
+
+            return res, 200
 
 
 class AuthService:
@@ -39,10 +45,12 @@ class AuthService:
     def blacklist(self, username, token):
         self.repository.set("blacklist->" + username, token)
 
-    def verify(self, token):
-        decoded_token = decode_token(token)
+    def verify(self, token, username):
+        decoded_token = utils.decode_token(token)
         blacklisted_tokens = self.repository.get("blacklist->" + decoded_token["user"])
         for t in blacklisted_tokens:
             if token == t:
                 return False
-        return decoded_token
+        if username:
+            return decoded_token["user"] == username
+        return True

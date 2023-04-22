@@ -24,11 +24,12 @@ def main():
         session.execute(drop_table)
 
         create_posts_table = "CREATE TABLE IF NOT EXISTS jubs.posts "\
-                                    "(username text" \
+                                    "(posted_by text" \
+                                    ", picture text" \
                                     ", body text" \
                                     ", likes int" \
                                     ", posted_on timestamp" \
-                                    ", PRIMARY KEY (username, posted_on))"
+                                    ", PRIMARY KEY ((posted_by), posted_on))"
         logging.info("Creating posts table in Cassandra")
         session.execute(create_posts_table)
 

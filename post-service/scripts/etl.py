@@ -19,9 +19,6 @@ def transform(df):
     # converting date columns from object to timestamp
     df["posted_on"] =  [pd.Timestamp(t) for t in df["posted_on"]]
 
-    # converting uuid columns from string to uuid
-    df["id"] = [uuid.UUID(id) for id in df["id"]]
-
     return df
 
 
@@ -44,16 +41,17 @@ def main():
 
         logging.info("Loading data into the table")
         query_insert_posts = "INSERT INTO jubs.posts " \
-                                "(username, body, likes, posted_on) " \
-                                "VALUES (?, ?, ?, ?)"
+                                "(posted_by, picture, body, likes, posted_on) " \
+                                "VALUES (?, ?, ?, ?, ?)"
         prepared_posts = session.prepare(query_insert_posts)
 
         for index, row in df.iterrows():
             session.execute(prepared_posts
-                            , (row["username"]
-                               , row["body"]
-                               , row["likes"]
-                               , row["posted_on"]))
+                            , (row["posted_by"]
+                            , row["picture"]
+                            , row["body"]
+                            , row["likes"]
+                            , row["posted_on"]))
 
     except Exception as e:
         logging.error(f"Error loading data into table: {e}")

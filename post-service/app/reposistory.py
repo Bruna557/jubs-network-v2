@@ -13,10 +13,10 @@ def get_by_users(users, page_size, posted_on, scroll):
 
         logging.info("Fetching posts")
         if scroll == "down":
-            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND posted_on < ? ORDER BY posted_on"
+            query = session.prepare("SELECT * FROM jubs.posts WHERE posted_by IN ? AND posted_on < ? ORDER BY posted_on"
                                     " DESC LIMIT ?")
         else:
-            query = session.prepare("SELECT * FROM jubs.posts WHERE username IN ? AND posted_on > ? ORDER BY posted_on"
+            query = session.prepare("SELECT * FROM jubs.posts WHERE posted_by IN ? AND posted_on > ? ORDER BY posted_on"
                                     " DESC LIMIT ?")
 
         # Turn paging off since Cassandra cannot page queries with both ORDER BY and a IN restriction on the
@@ -50,7 +50,7 @@ def get_by_username(username):
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
-        results = session.execute("SELECT * FROM jubs.posts WHERE username = %s", (username, ))
+        results = session.execute("SELECT * FROM jubs.posts WHERE posted_by = %s", (username, ))
         return list(results)
 
     except Exception as e:
@@ -63,17 +63,17 @@ def get_by_username(username):
         cluster.shutdown()
 
 
-def create(username, body):
+def create(username, picture, body):
     try:
         logging.info("Connecting to Cassandra")
         session, cluster = db.cassandra_connection()
 
         logging.info("Adding post")
         query = session.prepare("""
-           INSERT INTO jubs.posts (username, body, likes, posted_on)
-           VALUES (?, ?, ?, ?)
+           INSERT INTO jubs.posts (posted_by, picture, body, likes, posted_on)
+           VALUES (?, ?, ?, ?, ?)
            """)
-        session.execute(query, [username, body, 0, datetime.now().replace(microsecond=0)])
+        session.execute(query, [username, picture, body, 0, datetime.now().replace(microsecond=0)])
 
     except Exception as e:
         logging.error(f"Failed to create post: {e}")
@@ -91,7 +91,7 @@ def edit(username, posted_on, body):
         session, cluster = db.cassandra_connection()
 
         logging.info("Updating post")
-        session.execute("UPDATE jubs.posts SET body = %s WHERE username = %s AND posted_on = %s",
+        session.execute("UPDATE jubs.posts SET body = %s WHERE posted_by = %s AND posted_on = %s",
                         (body, username, int(posted_on)))
 
     except Exception as e:
@@ -110,10 +110,10 @@ def like(username, posted_on):
         session, cluster = db.cassandra_connection()
 
         logging.info("Incrementing likes")
-        post = session.execute("SELECT * FROM jubs.posts WHERE username = %s AND posted_on = %s",
+        post = session.execute("SELECT * FROM jubs.posts WHERE posted_by = %s AND posted_on = %s",
                                (username, int(posted_on)))
         likes = post[0].likes + 1
-        session.execute("UPDATE jubs.posts SET likes = %s WHERE username = %s AND posted_on = %s",
+        session.execute("UPDATE jubs.posts SET likes = %s WHERE posted_by = %s AND posted_on = %s",
                         (likes, username, int(posted_on)))
 
     except Exception as e:
@@ -132,7 +132,7 @@ def delete(username, posted_on):
         session, cluster = db.cassandra_connection()
 
         logging.info("Deleting post")
-        session.execute("DELETE FROM jubs.posts WHERE username = %s AND posted_on = %s",
+        session.execute("DELETE FROM jubs.posts WHERE posted_by = %s AND posted_on = %s",
                         (username, int(posted_on) if type(posted_on) == str else posted_on))
 
     except Exception as e:
