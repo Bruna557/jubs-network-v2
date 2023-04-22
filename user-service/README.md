@@ -1,22 +1,18 @@
-# User Service
+# Post Service
 
 ## Setup
-1. Run MongoDB and the App:
+1. Run Neo4j and the App:
 ```bash
 docker compose up
 ```
 
-2. Drop the collections (if you want a clean database):
-```bash
-python -m scripts.drop-collections
-```
-
-3. Create the indexes:
-```bash
-python -m scripts.create-indexes
-```
-
-4. Populate collection:
+2. Populate the graph:
 ```bash
 python -m scripts.etl
+```
+
+3. To test that everything is ok, you can connect cypher to the container
+```bash
+docker exec -it neo4j bash
+cypher-shell -u neo4j -p 12345678
 ```
