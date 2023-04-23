@@ -12,22 +12,15 @@ services:
     build: ./user-service
     network_mode: host
     depends_on:
-      - mongo
-      - rabbitmq
-
-  follow_service:
-    build: ./follow-service
-    network_mode: host
-    depends_on:
       - neo4j
       - rabbitmq
 
-  timeline_service:
-    build: ./timeline-service
+  api_gateway:
+    build: ./api-gateway
     network_mode: host
     depends_on:
       - redis
-      - follow_service
+      - user_service
       - post_service
 
   cassandra:
@@ -42,18 +35,6 @@ services:
       - CASSANDRA_CLUSTER_NAME=PostsCluster
       - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
       - CASSANDRA_DC=datacenter
-
-  mongo:
-    container_name: mongodb-1
-    image: mongo:4.0.8
-    volumes:
-      - /home/bruna/study/jubs-network-v2/data/mongo
-    ports:
-      - 27017:27017
-    environment:
-      - MONGO_INITDB_DATABASE=jubs
-      - MONGO_INITDB_ROOT_USERNAME=jubs
-      - MONGO_INITDB_ROOT_PASSWORD=12345678
 
   redis:
     container_name: redis-1

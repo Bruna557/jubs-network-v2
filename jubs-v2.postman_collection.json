@@ -17,7 +17,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTI0NDI5NS4yMTU3OTl9.eyJ1c2VyIjoiYnJ1bmEifQ.s3reR6Du6A-eBEiaGhfDU0X5bvijGJzEu2D8FbhGR1o",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
 									"type": "string"
 								}
 							]
@@ -25,15 +25,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5008/users/bruna",
+							"raw": "http://localhost:5007/users/jondoe",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5008",
+							"port": "5007",
 							"path": [
 								"users",
-								"bruna"
+								"jondoe"
 							]
 						}
 					},
@@ -47,27 +47,43 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:5008/users?username=r",
+							"raw": "http://localhost:5007/users/jondoe/search?q=r&page_size=5&page_number=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5008",
+							"port": "5007",
 							"path": [
-								"users"
+								"users",
+								"jondoe",
+								"search"
 							],
 							"query": [
 								{
-									"key": "username",
+									"key": "q",
 									"value": "r"
+								},
+								{
+									"key": "page_size",
+									"value": "5"
+								},
+								{
+									"key": "page_number",
+									"value": "1"
 								}
 							]
 						}
@@ -90,12 +106,12 @@
 							"raw": "{\n    \"username\": \"jondoe\",\n    \"password\": \"1234\",\n    \"bio\": \"Some bio.\",\n    \"picture\": \"some/picture\"\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:5008/users",
+							"raw": "http://localhost:5007/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5008",
+							"port": "5007",
 							"path": [
 								"users"
 							]
@@ -116,93 +132,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"jubs\",\n    \"password\": \"1234\"\n}\n"
-						},
-						"url": {
-							"raw": "http://localhost:5008/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5008",
-							"path": [
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTI0MzkyNS45NjY4NDl9.eyJ1c2VyIjoiYnJ1bmEifQ.YtVi64jR1FTgK7Tysm934kP45qV3xDVn3caWY8aSYMw",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
 							"raw": "{\n    \"username\": \"jondoe\",\n    \"password\": \"1234\"\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:5008/auth/logout/bruna",
+							"raw": "http://localhost:5007/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5008",
+							"port": "5007",
 							"path": [
 								"auth",
-								"logout",
-								"bruna"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Verify token",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTI0NDI5NS4yMTU3OTl9.eyJ1c2VyIjoiYnJ1bmEifQ.s3reR6Du6A-eBEiaGhfDU0X5bvijGJzEu2D8FbhGR1o\"\n}\n"
-						},
-						"url": {
-							"raw": "http://localhost:5008/auth/token/verify",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5008",
-							"path": [
-								"auth",
-								"token",
-								"verify"
+								"login"
 							]
 						}
 					},
@@ -216,7 +157,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
 									"type": "string"
 								}
 							]
@@ -234,12 +175,12 @@
 							"raw": "{\n    \"password\": \"newpassword\"\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:5008/users/jondoe",
+							"raw": "http://localhost:5007/users/jondoe",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5008",
+							"port": "5007",
 							"path": [
 								"users",
 								"jondoe"
@@ -256,7 +197,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
 									"type": "string"
 								}
 							]
@@ -274,12 +215,12 @@
 							"raw": "{\n    \"bio\": \"New bio.\"\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:5008/users/jondoe",
+							"raw": "http://localhost:5007/users/jondoe",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5008",
+							"port": "5007",
 							"path": [
 								"users",
 								"jondoe"
@@ -296,7 +237,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
 									"type": "string"
 								}
 							]
@@ -314,12 +255,12 @@
 							"raw": "{\n    \"picture\": \"new/picture\"\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:5008/users/jondoe",
+							"raw": "http://localhost:5007/users/jondoe",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5008",
+							"port": "5007",
 							"path": [
 								"users",
 								"jondoe"
@@ -364,6 +305,189 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get followers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/followers/jondoe?page_size=5&page_number=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"followers",
+								"jondoe"
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "5"
+								},
+								{
+									"key": "page_number",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get followings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/followings/jondoe?page_size=5&page_number=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"followings",
+								"jondoe"
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "5"
+								},
+								{
+									"key": "page_number",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get recommendation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5007/followers/recommendation/jondoe?page_size=5&page_number=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"followers",
+								"recommendation",
+								"jondoe"
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "5"
+								},
+								{
+									"key": "page_number",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follow",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MjI5NzUyNS44OTY4N30.eyJ1c2VyIjoiam9uZG9lIn0.Fywouxoyp1d8_A9dc0LZT9GlZrXXk9ASoCTB5ish1F8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5007/follow/jondoe/ryuzak",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"follow",
+								"jondoe",
+								"ryuzak"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5007/follow/jondoe/ryuzak",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"follow",
+								"jondoe",
+								"ryuzak"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -377,14 +501,7 @@
 					},
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [
@@ -396,7 +513,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"users\": [\n        \"bruna\",\n        \"jubs\",\n        \"ryuk\"\n    ]\n}"
+							"raw": "{\n    \"users\": [\n        \"jondoe\"\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:5006/posts?page_size=5&posted_on=1680885195&scroll=up",
@@ -434,7 +551,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
 									"type": "string"
 								}
 							]
@@ -449,15 +566,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"body\": \"New post.\"\n}\n"
+							"raw": "{\n    \"body\": \"New post.\",\n    \"picture\": \"some/picture.png\"\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:5006/posts/jondoe",
+							"raw": "http://localhost:5007/posts/jondoe",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5006",
+							"port": "5007",
 							"path": [
 								"posts",
 								"jondoe"
@@ -492,16 +609,16 @@
 							"raw": "{\n    \"body\": \"Edited post.\"\n}\n"
 						},
 						"url": {
-							"raw": "http://localhost:5006/posts/jondoe/1681566456000",
+							"raw": "http://localhost:5007/posts/jondoe/1682201298000",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5006",
+							"port": "5007",
 							"path": [
 								"posts",
 								"jondoe",
-								"1681566456000"
+								"1682201298000"
 							]
 						}
 					},
@@ -515,7 +632,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
 									"type": "string"
 								}
 							]
@@ -530,16 +647,16 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5006/likes/jondoe/1681566456000",
+							"raw": "http://localhost:5007/likes/jondoe/1682201298000",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5006",
+							"port": "5007",
 							"path": [
 								"likes",
 								"jondoe",
-								"1681566456000"
+								"1682201298000"
 							]
 						}
 					},
@@ -568,204 +685,16 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:5006/posts/jondoe/1681566456000",
+							"raw": "http://localhost:5007/posts/jondoe/1682201298000",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5006",
+							"port": "5007",
 							"path": [
 								"posts",
 								"jondoe",
-								"1681566456000"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "follow service",
-			"item": [
-				{
-					"name": "Get followings",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5005/followings/jondoe?page_size=5&page_number=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5005",
-							"path": [
-								"followings",
-								"jondoe"
-							],
-							"query": [
-								{
-									"key": "page_size",
-									"value": "5"
-								},
-								{
-									"key": "page_number",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get followers",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5005/followers/jondoe?page_size=1&page_number=3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5005",
-							"path": [
-								"followers",
-								"jondoe"
-							],
-							"query": [
-								{
-									"key": "page_size",
-									"value": "1"
-								},
-								{
-									"key": "page_number",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get recommendation",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5005/followers/recommendation/jondoe?page_size=5&page_number=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5005",
-							"path": [
-								"followers",
-								"recommendation",
-								"jondoe"
-							],
-							"query": [
-								{
-									"key": "page_size",
-									"value": "5"
-								},
-								{
-									"key": "page_number",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Follow",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5005/follow/jondoe/jubs",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5005",
-							"path": [
-								"follow",
-								"jondoe",
-								"jubs"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Unfollows",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImV4cCI6MTY4MTY1MjUzMi40NjI0NDV9.eyJ1c2VyIjoiam9uZG9lIn0.fcKG5IddpHJmEtEAeen3mkKy2KDACm7QrWJKtOjkg5I",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5005/follow/jondoe/bruna",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5005",
-							"path": [
-								"follow",
-								"jondoe",
-								"bruna"
+								"1682201298000"
 							]
 						}
 					},
@@ -784,7 +713,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYnJ1bmEifQ.-taElV8u0ZsI1uTdlGcpS8tHQGnEU6deWAuHtu-eBtc",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9uZG9lIn0.9-ydbnGwH1UIpxmsN7-mU_vD77R9mo6jkhCgtovCBUE",
 									"type": "string"
 								}
 							]
@@ -792,7 +721,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5007/timeline/bruna?posted_on=1461956907&scroll=up",
+							"raw": "http://localhost:5007/timeline/jondoe?posted_on=1681660304000&scroll=down",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -800,16 +729,16 @@
 							"port": "5007",
 							"path": [
 								"timeline",
-								"bruna"
+								"jondoe"
 							],
 							"query": [
 								{
 									"key": "posted_on",
-									"value": "1461956907"
+									"value": "1681660304000"
 								},
 								{
 									"key": "scroll",
-									"value": "up"
+									"value": "down"
 								}
 							]
 						}

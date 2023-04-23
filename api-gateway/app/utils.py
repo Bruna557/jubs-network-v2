@@ -29,8 +29,18 @@ def get_posts(users, posted_on, scroll):
     return json.dumps({"posts": posts, "has_more": json_result["has_more"]}), result.status_code
 
 
+def login(data):
+    result = requests.post(f"http://localhost:5005/auth/login",
+                           data=json.dumps(data),
+                           headers={"Content-Type": "application/json"})
+
+    return result.text, result.status_code
+
+
 def create_user(data):
-    result = requests.post(f"http://localhost:5005/users", data=data, headers={"Content-Type": "application/json"})
+    result = requests.post(f"http://localhost:5005/users",
+                           data=json.dumps(data),
+                           headers={"Content-Type": "application/json"})
 
     return result.text, result.status_code
 
@@ -47,8 +57,9 @@ def search_users(username, q, page_size, page_number):
     return result.text, result.status_code
 
 
-def update_user(username, data):
-    result = requests.put(f"http://localhost:5005/users/{username}", data=data,
+def edit_user(username, data):
+    result = requests.put(f"http://localhost:5005/users/{username}",
+                          data=json.dumps(data),
                           headers={"Content-Type": "application/json"})
 
     return result.text, result.status_code
@@ -67,7 +78,7 @@ def get_followers(username, page_size, page_number):
 
 
 def get_recommendation(username, page_size, page_number):
-    result = requests.get(f"http://localhost:5005/followers/recommendation/{username}/?page_size={page_size}&page_number={page_number}")
+    result = requests.get(f"http://localhost:5005/followers/recommendation/{username}?page_size={page_size}&page_number={page_number}")
 
     return result.text, result.status_code
 
@@ -92,7 +103,7 @@ def delete_user(username):
 
 def create_post(username, data):
     result = requests.post(f"http://localhost:5006/posts/{username}",
-                           data=data,
+                           data=json.dumps(data),
                            headers={"Content-Type": "application/json"})
 
     return result.text, result.status_code
@@ -100,7 +111,7 @@ def create_post(username, data):
 
 def edit_post(username, posted_on, data):
     result = requests.put(f"http://localhost:5006/posts/{username}/{posted_on}",
-                           data=data,
+                           data=json.dumps(data),
                            headers={"Content-Type": "application/json"})
 
     return result.text, result.status_code

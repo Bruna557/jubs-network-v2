@@ -112,7 +112,7 @@ def like(username, posted_on):
         logging.info("Incrementing likes")
         post = session.execute("SELECT * FROM jubs.posts WHERE posted_by = %s AND posted_on = %s",
                                (username, int(posted_on)))
-        likes = post[0].likes + 1
+        likes = post[0][3] + 1
         session.execute("UPDATE jubs.posts SET likes = %s WHERE posted_by = %s AND posted_on = %s",
                         (likes, username, int(posted_on)))
 

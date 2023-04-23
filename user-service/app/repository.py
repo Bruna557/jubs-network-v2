@@ -11,7 +11,7 @@ def add(username, password, bio, picture):
 
         logging.info("Adding user")
         hashed_password = hash_password(password)
-        query = "MERGE (:Person {username: $username, passowrd: $password, bio: $bio, picture: $picture})"
+        query = "MERGE (:Person {username: $username, password: $password, bio: $bio, picture: $picture})"
         session.run(query, username=username, password=hashed_password, bio=bio, picture=picture)
 
         return get_encoded_jwt(username)
@@ -64,7 +64,7 @@ def search(username, q, page_size, page_number):
             RETURN user {
                 username: user.username,
                 bio: user.bio,
-                picture: user.picture
+                picture: user.picture,
                 is_followed: EXISTS( (:Person {username: $username})-[:FOLLOWS]->(:Person {username: user.username}) )
             }
             SKIP $skip
@@ -239,8 +239,7 @@ def get_recommendation(username, page_size, page_number):
         """
         result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
 
-        recommendations = [record.values()[0]["username"] for record in result]
-        return recommendations
+        return [record["recommendation"]["username"] for record in result.data()]
 
     except Exception as e:
         logging.error(f"Failed to fetch recommendation: {e}")

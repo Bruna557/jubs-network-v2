@@ -81,7 +81,7 @@ def logout(username):
 
 @app.route("/users", methods=["POST"])
 def create_user():
-    res, status_code = utils.create_user(request.get_json)
+    res, status_code = utils.create_user(request.get_json())
 
     response = Response(res)
     response.status = status_code
@@ -117,7 +117,7 @@ def search_users(username):
 @app.route("/users/<username>", methods=["PUT"])
 @is_authorized
 def edit_user(username):
-    res, status_code = utils.edit_user(username, request.get_json)
+    res, status_code = utils.edit_user(username, request.get_json())
 
     response = Response(res)
     response.status = status_code

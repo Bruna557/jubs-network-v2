@@ -20,13 +20,6 @@ python -m scripts.etl
 ```
 
 ```bash
-cd user-service/
-pip install -r requirements.txt
-python -m scripts.create-indexes
-python -m scripts.etl
-```
-
-```bash
 cd follow-service/
 pip install -r requirements.txt
 python -m scripts.etl
@@ -49,7 +42,6 @@ User | create_user | POST | /users
 User | edit_user | PUT | /users/<username>
 User | delete_user | DELETE | /users/<username>
 User | login | POST | /auth/login
-User | logout | DELETE | /auth/logout/<username>
 User | verify_token | POST | /auth/token/verify
 Post | get_posts | GET | /posts
 Post | create_post | POST | /posts/<username>
@@ -61,4 +53,9 @@ Follow | get_followers | GET | /followers/<username>
 Follow | get_recommendation | GET | /followers/recommendation/<username>
 Follow | follow | POST | /follow/<username>/<followed>
 Follow | unfollow | DELETE | /follow/<username>/<followed>
-Timeline | get_timeline | GET | /timeline/<username>
+
+Specific methods in API Gateway:
+Function | Method | Endpoint
+----------|--------|---------
+logout | DELETE | /auth/logout/<username>
+get_timeline | GET | /timeline/<username>
