@@ -28,9 +28,8 @@ python -m scripts.etl
 ## Data
  Database | Type | Name | Data
 ----------|------|------|-----
-MongoDB | Collection | Users | username (indexed), password, bio, picture
 Cassandra | Table | Posts | username (partition key), posted_on (clustering key), body, likes
-Neo4j | Graph | Follows | (:follower) -> [:FOLLOWS] -> (:followed)
+Neo4j | Graph | Follows | (:Person {username, password, bio, picture}) -> [:FOLLOWS] -> (:Person)
 Redis | Key-value | TimelineCache | username -> [post1, post2, ...]
 
 ## Services
@@ -56,6 +55,6 @@ Follow | unfollow | DELETE | /follow/<username>/<followed>
 
 Specific methods in API Gateway:
 Function | Method | Endpoint
-----------|--------|---------
+---------|--------|---------
 logout | DELETE | /auth/logout/<username>
 get_timeline | GET | /timeline/<username>

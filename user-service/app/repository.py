@@ -173,9 +173,13 @@ def get_followings(username, page_size, page_number):
                 SKIP $skip
                 LIMIT $limit
             """
-        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
+        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size)+1)
+        followings = result.data()
+        has_more = int(page_size) > -1 and len(followings) > int(page_size)
+        if has_more:
+            followings = followings[:int(page_size)]
 
-        return result.data()
+        return followings, has_more
 
     except Exception as e:
         logging.error(f"Failed to fetch followings: {e}")
@@ -207,9 +211,13 @@ def get_followers(username, page_size, page_number):
                 SKIP $skip
                 LIMIT $limit
             """
-        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
+        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size)+1)
+        followers = result.data()
+        has_more = int(page_size) > -1 and len(followers) > int(page_size)
+        if has_more:
+            followers = followers[:int(page_size)]
 
-        return result.data()
+        return followers, has_more
 
     except Exception as e:
         logging.error(f"Failed to fetch followers: {e}")
@@ -232,14 +240,21 @@ def get_recommendation(username, page_size, page_number):
             WHERE user <> recommendation
             AND NOT (:Person {username: $username})-[:FOLLOWS]->(recommendation:Person)
             RETURN recommendation {
-                username: recommendation.username
+                username: recommendation.username,
+                bio: recommendation.bio,
+                picture: recommendation.picture,
+                is_followed: false
             }
             SKIP $skip
             LIMIT $limit
         """
-        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
+        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size)+1)
+        recommendation = result.data()
+        has_more = len(recommendation) > int(page_size)
+        if has_more:
+            recommendation = recommendation[:int(page_size)]
 
-        return [record["recommendation"]["username"] for record in result.data()]
+        return recommendation, has_more
 
     except Exception as e:
         logging.error(f"Failed to fetch recommendation: {e}")

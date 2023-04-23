@@ -47,7 +47,8 @@ def get_user(username):
 @app.route("/users/<username>/search", methods=["GET"])
 def search_users(username):
     try:
-        users = repository.search(username, request.args.get("q"), request.args.get("page_size"), request.args.get("page_number"))
+        users = repository.search(username, request.args.get("q"), request.args.get("page_size"),
+                                  request.args.get("page_number"))
         response = Response(json.dumps(users))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
@@ -87,8 +88,9 @@ def edit_user(username):
 @app.route("/followings/<username>", methods=["GET"])
 def get_followings(username):
     try:
-        followings = repository.get_followings(username, request.args.get("page_size"), request.args.get("page_number"))
-        response = Response(json.dumps(followings))
+        followings, has_more = repository.get_followings(username, request.args.get("page_size"),
+                                                         request.args.get("page_number"))
+        response = Response(json.dumps({"followings": followings, "has_more": has_more}))
         response.status = 200
         response.headers["Cache-Control"] = "public, max-age=60"
 
@@ -103,8 +105,9 @@ def get_followings(username):
 @app.route("/followers/<username>", methods=["GET"])
 def get_followers(username):
     try:
-        followers = repository.get_followers(username, request.args.get("page_size"), request.args.get("page_number"))
-        response = Response(json.dumps(followers))
+        followers, has_more = repository.get_followers(username, request.args.get("page_size"),
+                                                       request.args.get("page_number"))
+        response = Response(json.dumps({"followers": followers, "has_more": has_more}))
         response.status = 200
         response.headers["Cache-Control"] = "public, max-age=60"
 
@@ -119,8 +122,9 @@ def get_followers(username):
 @app.route("/followers/recommendation/<username>", methods=["GET"])
 def get_recommendation(username):
     try:
-        followers = repository.get_recommendation(username, request.args.get("page_size"), request.args.get("page_number"))
-        response = Response(json.dumps(followers))
+        recommendation, has_more = repository.get_recommendation(username, request.args.get("page_size"),
+                                                                 request.args.get("page_number"))
+        response = Response(json.dumps({"recommendation": recommendation, "has_more": has_more}))
         response.status = 200
         response.headers["Cache-Control"] = "public, max-age=60"
 

@@ -25,7 +25,7 @@ class TimelineService:
             if status_code != 200:
                 return "Failed to fetch followings", 500
 
-            users = [u["followed"]["username"] for u in json.loads(res)]
+            users = [r["followed"]["username"] for r in json.loads(res)["followings"]]
             users.append(username)
 
             res, status_code = utils.get_posts(users, posted_on, scroll)
