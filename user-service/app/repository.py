@@ -70,8 +70,14 @@ def search(username, q, page_size, page_number):
             SKIP $skip
             LIMIT $limit
         """
-        result = session.run(query, q=q, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size))
-        return [record.data() for record in result]
+        result = session.run(query, q=q, username=username, skip=int(page_size)*(int(page_number)-1),
+                             limit=int(page_size)+1)
+        users = result.data()
+        has_more = len(users) > int(page_size)
+        if has_more:
+            users = users[:int(page_size)]
+
+        return users, has_more
 
     except Exception as e:
         logging.error(f"Failed to search users: {e}")
@@ -173,7 +179,8 @@ def get_followings(username, page_size, page_number):
                 SKIP $skip
                 LIMIT $limit
             """
-        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size)+1)
+        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1),
+                             limit=int(page_size)+1)
         followings = result.data()
         has_more = int(page_size) > -1 and len(followings) > int(page_size)
         if has_more:
@@ -211,7 +218,8 @@ def get_followers(username, page_size, page_number):
                 SKIP $skip
                 LIMIT $limit
             """
-        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size)+1)
+        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1),
+                             limit=int(page_size)+1)
         followers = result.data()
         has_more = int(page_size) > -1 and len(followers) > int(page_size)
         if has_more:
@@ -248,7 +256,8 @@ def get_recommendation(username, page_size, page_number):
             SKIP $skip
             LIMIT $limit
         """
-        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1), limit=int(page_size)+1)
+        result = session.run(query, username=username, skip=int(page_size)*(int(page_number)-1),
+                             limit=int(page_size)+1)
         recommendation = result.data()
         has_more = len(recommendation) > int(page_size)
         if has_more:

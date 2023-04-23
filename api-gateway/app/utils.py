@@ -54,7 +54,13 @@ def get_user(username):
 def search_users(username, q, page_size, page_number):
     result = requests.get(f"http://localhost:5005/users/{username}/search?q={q}&page_size={page_size}&page_number={page_number}")
 
-    return result.text, result.status_code
+    if result.status_code != 200:
+        return result.text, result.status_code
+
+    json_result = json.loads(result.text)
+    users = [r["user"] for r in json_result["result"]]
+
+    return json.dumps({"result": users, "has_more": json_result["has_more"]}), result.status_code
 
 
 def edit_user(username, data):
@@ -68,19 +74,37 @@ def edit_user(username, data):
 def get_followings(username, page_size, page_number):
     result = requests.get(f"http://localhost:5005/followings/{username}?page_size={page_size}&page_number={page_number}")
 
-    return result.text, result.status_code
+    if result.status_code != 200:
+        return result.text, result.status_code
+
+    json_result = json.loads(result.text)
+    users = [r["followed"] for r in json_result["result"]]
+
+    return json.dumps({"result": users, "has_more": json_result["has_more"]}), result.status_code
 
 
 def get_followers(username, page_size, page_number):
-    result = requests.get(f"http://localhost:5005/followers/{username}/?page_size={page_size}&page_number={page_number}")
+    result = requests.get(f"http://localhost:5005/followers/{username}?page_size={page_size}&page_number={page_number}")
 
-    return result.text, result.status_code
+    if result.status_code != 200:
+        return result.text, result.status_code
+
+    json_result = json.loads(result.text)
+    users = [r["follower"] for r in json_result["result"]]
+
+    return json.dumps({"result": users, "has_more": json_result["has_more"]}), result.status_code
 
 
 def get_recommendation(username, page_size, page_number):
     result = requests.get(f"http://localhost:5005/followers/recommendation/{username}?page_size={page_size}&page_number={page_number}")
 
-    return result.text, result.status_code
+    if result.status_code != 200:
+        return result.text, result.status_code
+
+    json_result = json.loads(result.text)
+    users = [r["user"] for r in json_result["result"]]
+
+    return json.dumps({"result": users, "has_more": json_result["has_more"]}), result.status_code
 
 
 def follow(username, followed):

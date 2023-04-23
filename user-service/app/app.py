@@ -47,9 +47,9 @@ def get_user(username):
 @app.route("/users/<username>/search", methods=["GET"])
 def search_users(username):
     try:
-        users = repository.search(username, request.args.get("q"), request.args.get("page_size"),
-                                  request.args.get("page_number"))
-        response = Response(json.dumps(users))
+        users, has_more = repository.search(username, request.args.get("q"), request.args.get("page_size"),
+                                            request.args.get("page_number"))
+        response = Response(json.dumps({"result": users, "has_more": has_more}))
         response.headers["Cache-Control"] = "public, max-age=60"
         response.status = 200
 
@@ -90,7 +90,7 @@ def get_followings(username):
     try:
         followings, has_more = repository.get_followings(username, request.args.get("page_size"),
                                                          request.args.get("page_number"))
-        response = Response(json.dumps({"followings": followings, "has_more": has_more}))
+        response = Response(json.dumps({"result": followings, "has_more": has_more}))
         response.status = 200
         response.headers["Cache-Control"] = "public, max-age=60"
 
@@ -107,7 +107,7 @@ def get_followers(username):
     try:
         followers, has_more = repository.get_followers(username, request.args.get("page_size"),
                                                        request.args.get("page_number"))
-        response = Response(json.dumps({"followers": followers, "has_more": has_more}))
+        response = Response(json.dumps({"result": followers, "has_more": has_more}))
         response.status = 200
         response.headers["Cache-Control"] = "public, max-age=60"
 
@@ -124,7 +124,7 @@ def get_recommendation(username):
     try:
         recommendation, has_more = repository.get_recommendation(username, request.args.get("page_size"),
                                                                  request.args.get("page_number"))
-        response = Response(json.dumps({"recommendation": recommendation, "has_more": has_more}))
+        response = Response(json.dumps({"result": recommendation, "has_more": has_more}))
         response.status = 200
         response.headers["Cache-Control"] = "public, max-age=60"
 
