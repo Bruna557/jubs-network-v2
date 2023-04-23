@@ -10,10 +10,15 @@ export type User = {
     username: string,
     bio: string,
     picture: string
-    follow?: boolean
+    is_followed?: boolean
 }
 
 export type TimelineResult = {
     posts: Post[],
+    has_more: boolean
+}
+
+export type UsersResult = {
+    result: User[]
     has_more: boolean
 }

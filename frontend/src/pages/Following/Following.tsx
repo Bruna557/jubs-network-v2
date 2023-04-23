@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { useSearchParams, useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { Col } from "react-bootstrap"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -8,26 +8,23 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 
 import { User } from "../../types"
 import UserCard from "../../components/UserCard/UserCard"
-import { search } from "../../services/mocks/userService"
+import { fetchFollowing } from "../../services/mocks/userService"
 import { getUser } from "../../store/userSlice"
-import "./SearchResult.scss"
+import "./Following.scss"
 
-const SearchResult = () => {
+const Following = () => {
   const navigate = useNavigate()
   const [users, setUsers] = useState<User[]>([])
-  const [searchText, setSearchText] = useState("")
-  const [searchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const user = useSelector(getUser)
 
   useEffect(() => {
-    setSearchText(searchParams.get("q") || "")
     nextPage()
-  }, [searchParams.get("q")])
+  }, [])
 
   const nextPage = () => {
-    search(user.username, searchParams.get("q") || "", currentPage)
+    fetchFollowing(user.username, currentPage)
       .then(result => {
         setUsers(result.result)
         setHasMore(result.has_more)
@@ -40,7 +37,7 @@ const SearchResult = () => {
 
   return (
     <>
-      <h4>Search result: {searchText}</h4>
+      <h4>Following:</h4>
       <div className="results">
       <InfiniteScroll
         dataLength={users.length}
@@ -59,4 +56,4 @@ const SearchResult = () => {
   )
 }
 
-export default SearchResult
+export default Following

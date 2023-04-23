@@ -81,6 +81,8 @@ const Navigation = (user: User) => {
             </Nav>
             <Nav>
               <NavDropdown title={<img src={user.picture} alt="profile"></img>} id="profile-picture" align="end">
+                <NavDropdown.Item onClick={() => navigate("/followers")}>Followers</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate("/following")}>Following</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("bio")}>Change bio</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("picture")}>Change picture</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => handleShowModal("password")}>Change password</NavDropdown.Item>

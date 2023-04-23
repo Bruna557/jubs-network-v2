@@ -1,4 +1,4 @@
-import { User } from "../../types"
+import { User, UsersResult } from "../../types"
 
 let user: User = {
     "username": "bruna",
@@ -6,21 +6,27 @@ let user: User = {
     "picture": "https://cdn-icons-png.flaticon.com/512/5968/5968350.png"
 }
 
-let users: User[] = [
+let users = [
     {
+
         "username": "lilith",
         "bio": "I am a cat interested in shoelaces and garbage.",
-        "picture": "https://cdn-icons-png.flaticon.com/512/2373/2373010.png"
+        "picture": "https://cdn-icons-png.flaticon.com/512/2373/2373010.png",
+        "is_followed": true
     },
     {
+
         "username": "jubs",
         "bio": "I am a dog interested in toys, bones and walks.",
-        "picture": "https://cdn-icons-png.flaticon.com/512/8876/8876508.png"
+        "picture": "https://cdn-icons-png.flaticon.com/512/8876/8876508.png",
+        "is_followed": false
     },
     {
+
         "username": "ryuk",
         "bio": "I am a god of death interested in apples.",
-        "picture": "https://cdn-icons-png.flaticon.com/512/415/415682.png"
+        "picture": "https://cdn-icons-png.flaticon.com/512/415/415682.png",
+        "is_followed": true
     }
 ]
 
@@ -58,9 +64,35 @@ export const register = async (username: string, password: string, bio: string, 
     })
 }
 
-export const search = async (username: string): Promise<User[]> => {
-    console.log("Search " + username)
+export const search = async (username: string, q: string, page_number: number): Promise<UsersResult> => {
+    console.log("Search " + q)
     return new Promise((resolve, reject) => {
-        resolve(users)
+        resolve({has_more: false, result: users})
+    })
+}
+
+export const fetchRecommendation = async (username: string): Promise<UsersResult> => {
+    return new Promise((resolve, reject) => {
+        resolve({has_more: false, result: users})
+    })
+}
+
+export const follow = async (username: string, followed: string) => {
+    console.log(username + " followed " + followed)
+}
+
+export const unfollow = async (username: string, followed: string) => {
+    console.log(username + " unfollowed " + followed)
+}
+
+export const fetchFollowers = async (username: string, page_number: number): Promise<UsersResult> => {
+    return new Promise((resolve, reject) => {
+        resolve({has_more: false, result: users})
+    })
+}
+
+export const fetchFollowing = async (username: string, page_number: number): Promise<UsersResult> => {
+    return new Promise((resolve, reject) => {
+        resolve({has_more: false, result: users})
     })
 }
