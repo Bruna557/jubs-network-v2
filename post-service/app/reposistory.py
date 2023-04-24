@@ -23,8 +23,7 @@ def get_by_users(users, page_size, posted_on, scroll):
         # partition key
         query.fetch_size = None
 
-        results = session.execute(query,
-                                  (users, int(posted_on) if type(posted_on) == str else posted_on, int(page_size) + 1))
+        results = session.execute(query,(users, int(posted_on), int(page_size) + 1))
 
         posts = list(results)
         if len(posts) > int(page_size):
@@ -73,7 +72,10 @@ def create(username, picture, body):
            INSERT INTO jubs.posts (posted_by, picture, body, likes, posted_on)
            VALUES (?, ?, ?, ?, ?)
            """)
-        session.execute(query, [username, picture, body, 0, datetime.now().replace(microsecond=0)])
+        posted_on = datetime.now().replace(microsecond=0)
+        likes = 0
+        session.execute(query, [username, picture, body, likes, posted_on])
+        return {"username": username, "picture": picture, "body": body, "likes": likes, "posted_on": posted_on}
 
     except Exception as e:
         logging.error(f"Failed to create post: {e}")

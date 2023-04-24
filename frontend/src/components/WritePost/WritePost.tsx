@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { Button, Row, Col, Card } from "react-bootstrap"
 
 import { User, Post } from "../../types"
-import { post } from "../../services/mocks/postService"
+import { post } from "../../services/postService"
 import "./WritePost.scss"
 
 interface WritePostProps {
@@ -17,7 +17,7 @@ const WritePost = ({user, postHandler}: WritePostProps
     const [postBody, setPostBody] = useState("")
 
   const handleSubmit = () => {
-    post(user.username, postBody)
+    post(user.username, postBody, user.picture)
       .then(result => {
         if (result) {
           postHandler(result)

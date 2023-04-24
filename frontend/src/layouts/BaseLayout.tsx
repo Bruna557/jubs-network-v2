@@ -5,8 +5,8 @@ import { Row, Col } from "react-bootstrap"
 
 import Navigation from "../components/Navigation/Navigations"
 import UserCard from "../components/UserCard/UserCard"
-import { fetchUser } from "../services/mocks/userService"
-import { fetchRecommendation } from "../services/mocks/userService"
+import { fetchUser } from "../services/userService"
+import { fetchRecommendation } from "../services/userService"
 import { User } from "../types"
 import { getUser, setUser } from "../store/userSlice"
 

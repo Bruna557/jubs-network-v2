@@ -1,11 +1,12 @@
-import { URLS } from "./config"
+import { API_GATEWAY_URL } from "./config"
 import { TimelineResult } from "../types"
 
 const HEADERS: HeadersInit = new Headers();
 HEADERS.set("Authorization", `Bearer ${localStorage.getItem("token")}` || "")
 
 export const fetchTimeline = async (username: string, postedOn: string): Promise<TimelineResult> => {
-    const url = `${URLS["timeline-service"]}/timeline/${username}?posted_on=${Date.parse(postedOn)}&scroll=down`
+    console.log(postedOn)
+    const url = `${API_GATEWAY_URL}/timeline/${username}?posted_on=${Date.parse(postedOn)}&scroll=down`
     return fetch(url, {
         method: "GET",
         headers: HEADERS
@@ -19,7 +20,7 @@ export const fetchTimeline = async (username: string, postedOn: string): Promise
     })
     .catch ((err) => {
         console.log("Error: unable to fetch posts", err)
-        if (err.response.status == 401) {
+        if (err.response.status === 401) {
             throw new Error("Unauthorized");
         }
     })

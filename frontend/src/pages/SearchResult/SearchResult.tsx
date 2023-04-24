@@ -8,7 +8,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 
 import { User } from "../../types"
 import UserCard from "../../components/UserCard/UserCard"
-import { search } from "../../services/mocks/userService"
+import { search } from "../../services/userService"
 import { getUser } from "../../store/userSlice"
 import "./SearchResult.scss"
 

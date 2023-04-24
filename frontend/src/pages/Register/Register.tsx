@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { Button, Row } from "react-bootstrap"
 
-import { register } from "../../services/mocks/userService"
+import { register } from "../../services/userService"
 import { setUsername } from "../../store/userSlice"
 import "./Register.scss"
 
@@ -16,11 +16,13 @@ const Register = () => {
   const [picture, setPicture] = useState("")
 
   const handleSignUp = () => {
-    register(username, password, bio, picture).then(success => {
-      if(success) {
-        dispatch(setUsername(username))
-        navigate("/home")
-      }
+    register(username, password, bio, picture)
+      .then(token => {
+        if(token) {
+          localStorage.setItem("token", token)
+          dispatch(setUsername(username))
+          navigate("/home")
+        }
     })
   }
 

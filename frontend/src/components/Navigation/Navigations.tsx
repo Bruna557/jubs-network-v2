@@ -7,7 +7,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
 import { User } from "../../types"
 import { setBio, setPicture } from "../../store/userSlice"
-import { changeBio, changePicture, changePassword } from "../../services/mocks/userService"
+import { changeBio, changePicture, changePassword } from "../../services/userService"
 import "./Navigation.scss"
 
 const Navigation = (user: User) => {
@@ -59,7 +59,7 @@ const Navigation = (user: User) => {
       <Navbar collapseOnSelect expand="md" fixed="top">
         <Container>
           <Navbar.Brand>
-            <Link to="/">
+            <Link to="/home">
               <img src="/assets/logo.png" alt="logo"></img>
             </Link>
           </Navbar.Brand>

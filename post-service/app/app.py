@@ -31,8 +31,8 @@ def get_posts():
 def create_post(username):
     try:
         data = request.get_json()
-        reposistory.create(username, data["picture"], data["body"])
-        response = Response("OK")
+        post = reposistory.create(username, data["picture"], data["body"])
+        response = Response(json.dumps(post))
         response.status_code = 200
 
     except Exception as e:

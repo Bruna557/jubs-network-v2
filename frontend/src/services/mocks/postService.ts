@@ -1,6 +1,6 @@
 import { Post } from "../../types"
 
-export const post = async (username: string, body: string): Promise<Post> => {
+export const post = async (username: string, body: string, picture: string): Promise<Post> => {
     return new Promise((resolve, reject) => {
         resolve({
             username: username,

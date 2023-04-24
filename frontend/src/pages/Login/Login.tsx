@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { Button, Row } from "react-bootstrap"
 
-import { login } from "../../services/mocks/userService"
+import { login } from "../../services/userService"
 import { setUsername } from "../../store/userSlice"
 import "./Login.scss"
 
@@ -14,8 +14,9 @@ const Login = () => {
   const [password, setPassword] = useState("")
 
   const handleSignIn = () => {
-    login(username, password).then(success => {
-      if(success) {
+    login(username, password).then(token => {
+      if(token) {
+        localStorage.setItem("token", token)
         dispatch(setUsername(username))
         navigate("/home")
       }

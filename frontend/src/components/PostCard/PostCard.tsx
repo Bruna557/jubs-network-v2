@@ -5,7 +5,7 @@ import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import { Post } from "../../types"
-import { like } from "../../services/mocks/postService"
+import { like } from "../../services/postService"
 import "./PostCard.scss"
 
 const PostCard = (p: Post) => {

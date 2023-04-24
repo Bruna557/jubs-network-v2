@@ -48,7 +48,15 @@ def create_user(data):
 def get_user(username):
     result = requests.get(f"http://localhost:5005/users/{username}")
 
-    return result.text, result.status_code
+    if result.status_code != 200:
+        return result.text, result.status_code
+
+    json_result = json.loads(result.text)
+    user = None
+    if len(json_result) > 0:
+        user = json_result[0]["user"]
+
+    return json.dumps(user), result.status_code
 
 
 def search_users(username, q, page_size, page_number):
@@ -102,7 +110,7 @@ def get_recommendation(username, page_size, page_number):
         return result.text, result.status_code
 
     json_result = json.loads(result.text)
-    users = [r["user"] for r in json_result["result"]]
+    users = [r["recommendation"] for r in json_result["result"]]
 
     return json.dumps({"result": users, "has_more": json_result["has_more"]}), result.status_code
 
